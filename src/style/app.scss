@@ -1,0 +1,24 @@
+@import
+    'utilities/functions',
+    'utilities/mixins',
+    'utilities/variables';
+    
+@import
+    'vendor/gridstack',
+    'vendor/timeline',
+    'vendor/bootstrap';
+
+@import 
+    'base/base',
+    'base/typography';
+
+@import
+    'components/widget',
+    'components/calendar';
+    
+@import
+    'layout/header',
+    'layout/footer';
+    
+@import
+    'pages/dashboard';

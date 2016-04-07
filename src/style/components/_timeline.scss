@@ -1,0 +1,41 @@
+h1{
+    color:#68689a;
+    padding:40px;
+}
+form{
+    margin: 10px 0;
+}
+input{
+    outline:0px;
+}
+.nav-tabs{
+    margin-bottom: 30px;
+}
+contacts li{
+    list-style-type: none;
+    transition:.3s;
+    border-left: 2px solid white;
+    cursor:pointer;
+}
+contacts li:hover{
+    padding-left: 15px;
+    border-left: 2px solid red;
+    color:red;
+}
+
+
+#figure{padding: 0 16px;position: relative;}
+.arrow{width:16px;position: absolute;top: 227px;}
+.arrow.left{left:3px;}
+.arrow:hover{font-weight: bold;cursor:pointer;}
+.arrow.right{right:-3px;}
+#timeline{border: 1px solid pink;overflow:hidden;}
+.wtr_chrt_anim {-webkit-transition: -webkit-transform 300ms ease-in-out;transition: transform 300ms ease-in-out;}
+.middle-line {fill: none;stroke: #003866;shape-rendering: initial;stroke-width:2;stroke-linecap: round;stroke-dasharray: 1, 4;}
+.nodeContainer circle, .thumbnailContainer circle{stroke-width: 2px;fill: white;stroke: #ccc;}
+.lineContainer line{stroke: #ccc;shape-rendering: crispEdges;}
+.thumb {width: 75px;height: 75px;}
+.descContainer{font:13px/normal Arial,Helvetica,Sans-Serif;fill:#666;}
+.descContainer .title{font-weight:bold;}
+
+timeline{width:100%;height:500px;float:left;}

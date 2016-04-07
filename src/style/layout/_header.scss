@@ -1,0 +1,29 @@
+html,body{
+    overflow:visible!important;
+}
+
+nav-bar {
+    display: block;
+    .navbar {
+        border-radius: 0;
+    }
+}
+.p-abs{
+    position:absolute;
+}
+.p-rel{
+    position:relative;
+}
+.fleft{
+    float:left;
+}
+ui-tabs{
+    margin-top:20px;
+    display:block;
+}
+.w-100{
+    width:100%;
+}
+.ta-center{
+    text-align: center;
+}
