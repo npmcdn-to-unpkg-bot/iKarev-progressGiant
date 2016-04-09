@@ -59,13 +59,10 @@ System.register(['angular2/core', '../../../services/days/days.service', '../../
                         if (targets[i_1].target == newDo.target) {
                         }
                     }
-                    console.log(this.newDoing);
                     var newDoing = {
                         description: newDo.description,
                         important: newDo.important,
                         urgent: newDo.urgent,
-                        planTime: newDo.planTime,
-                        afterTime: 0,
                         target: newDo.target
                     };
                     this.lifeTarget.globalTargets[this.globalIndex].longTargets[this.longIndex].shortTargets[this.shortIndex].doings.push(newDoing);

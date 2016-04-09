@@ -11,7 +11,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1;
-    var DAYS, IDEAL_ROUTINE, DaysService;
+    var DAYS, MONTH, WEEK, IDEAL_ROUTINE, DaysService;
     return {
         setters:[
             function (core_1_1) {
@@ -19,20 +19,36 @@ System.register(['angular2/core'], function(exports_1, context_1) {
             }],
         execute: function() {
             exports_1("DAYS", DAYS = []);
+            exports_1("MONTH", MONTH = { days: [], weeks: [], doings: [] });
+            exports_1("WEEK", WEEK = [{ doings: [{ description: '', important: true, urgent: true, target: '' }] }]);
             exports_1("IDEAL_ROUTINE", IDEAL_ROUTINE = []);
             DaysService = (function () {
                 function DaysService() {
                     this.days = DAYS;
+                    this.month = MONTH;
                     this.idealRoutine = IDEAL_ROUTINE;
                 }
-                DaysService.prototype.getDays = function () {
-                    if (window.localStorage["days"] != null && window.localStorage["days"]) {
-                        this.days = JSON.parse(window.localStorage["days"]);
+                DaysService.prototype.getMonth = function () {
+                    if (window.localStorage["weeks"] != undefined && window.localStorage["weeks"]) {
+                        this.month.weeks = JSON.parse(window.localStorage["weeks"]);
+                    }
+                    else {
+                        this.month.weeks = [{ doings: [{ description: '', important: true, urgent: true, target: '' }] }, { doings: [{ description: '', important: true, urgent: true, target: '' }] }, { doings: [{ description: '', important: true, urgent: true, target: '' }] }, { doings: [{ description: '', important: true, urgent: true, target: '' }] }, { doings: [{ description: '', important: true, urgent: true, target: '' }] }];
+                    }
+                    if (window.localStorage["doings"] != undefined && window.localStorage["doings"]) {
+                        this.month.doings = JSON.parse(window.localStorage["doings"]);
+                    }
+                    else {
+                        this.month.doings = [{ description: 'Go ahead', important: true, urgent: true, target: 'gogo' }];
+                    }
+                    if (window.localStorage["days"] != undefined && window.localStorage["days"]) {
+                        this.month.days = JSON.parse(window.localStorage["days"]);
+                        console.log(this.month.days);
                     }
                     else {
                         var daysQty;
-                        var month = new Date().getMonth();
-                        switch (month) {
+                        var newMonth = new Date().getMonth();
+                        switch (newMonth) {
                             case 1:
                                 daysQty = 28;
                                 break;
@@ -54,24 +70,42 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                             default: daysQty = 31;
                         }
                         for (var i = 0; i < daysQty; i++) {
-                            this.days[i] = { index: i, date: { year: 2016, month: month, number: i + 1, weekday: (i + 1) % 7 }, doings: [] };
+                            this.month.days[i] = { index: i, date: { year: 2016, month: newMonth, number: i + 1, weekday: (i + 1) % 7 }, doings: [], done: false, routine: [{ doing: '', time: 0 }] };
                         }
                     }
-                    return this.days;
+                    return this.month;
                 };
                 DaysService.prototype.insertDay = function (day) {
-                    Promise.resolve(this.days).then(function (days) { return days.push(day); });
+                    Promise.resolve(this.month.days).then(function (days) { return days.push(day); });
                 };
                 DaysService.prototype.insertDoing = function (index, doing) {
                     var _this = this;
                     var doingsArray = this.days;
-                    Promise.resolve(this.days).then(function (days) { days[index].doings.push(doing); doingsArray = days; });
+                    Promise.resolve(this.month.days).then(function (days) { days[index].doings.push(doing); doingsArray = days; });
                     setTimeout(function () {
                         _this.updateDay();
                     });
                 };
                 DaysService.prototype.updateDay = function () {
-                    window.localStorage["days"] = JSON.stringify(this.days, function (key, val) {
+                    window.localStorage["days"] = JSON.stringify(this.month.days, function (key, val) {
+                        if (key == '$$hashKey') {
+                            return undefined;
+                        }
+                        return val;
+                    });
+                };
+                DaysService.prototype.updateWeeks = function (weeks) {
+                    this.month.weeks = weeks;
+                    window.localStorage["weeks"] = JSON.stringify(this.month.weeks, function (key, val) {
+                        if (key == '$$hashKey') {
+                            return undefined;
+                        }
+                        return val;
+                    });
+                };
+                DaysService.prototype.updateMonthDoings = function (doings) {
+                    this.month.doings = doings;
+                    window.localStorage["doings"] = JSON.stringify(this.month.doings, function (key, val) {
                         if (key == '$$hashKey') {
                             return undefined;
                         }
@@ -86,14 +120,13 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                         }
                         return val;
                     });
-                    console.log(this.idealRoutine);
                 };
                 DaysService.prototype.getIdealRoutine = function () {
                     if (window.localStorage["ideal-routine"] != null && window.localStorage["ideal-routine"]) {
                         this.idealRoutine = JSON.parse(window.localStorage["ideal-routine"]);
                     }
                     else {
-                        this.idealRoutine = [{ doing: '', time: 0, fullTime: 0 }];
+                        this.idealRoutine = [{ doing: '', time: 0, fullTime: 0, fullDays: 0 }];
                     }
                     return this.idealRoutine;
                 };

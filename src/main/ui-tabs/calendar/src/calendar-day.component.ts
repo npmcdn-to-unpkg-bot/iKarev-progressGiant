@@ -104,13 +104,10 @@ export class calendarDayComponent{
             if(targets[i].target == newDo.target){
             }
         }
-        console.log(this.newDoing);
         let newDoing = {
             description:newDo.description,
             important: newDo.important,
             urgent: newDo.urgent,
-            planTime: newDo.planTime,
-            afterTime:0,
             target:newDo.target
         }
         this.lifeTarget.globalTargets[this.globalIndex].longTargets[this.longIndex].shortTargets[this.shortIndex].doings.push(newDoing);

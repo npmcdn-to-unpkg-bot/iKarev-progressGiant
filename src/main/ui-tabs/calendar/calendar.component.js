@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../services/days/days.service', './src/calendar-day.component', './src/calendar-shedule.component', './src/ideal-routine.component'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../services/days/days.service', './src/calendar-day.component', './src/calendar-shedule.component', './src/ideal-routine.component', './src/calendar-weeks.component', './src/calendar-month.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,8 +10,8 @@ System.register(['angular2/core', '../../services/days/days.service', './src/cal
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, days_service_1, calendar_day_component_1, calendar_shedule_component_1, ideal_routine_component_1;
-    var WEEK, CalenderComponent;
+    var core_1, days_service_1, calendar_day_component_1, calendar_shedule_component_1, ideal_routine_component_1, calendar_weeks_component_1, calendar_month_component_1;
+    var WEEK, CalendarComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -28,69 +28,84 @@ System.register(['angular2/core', '../../services/days/days.service', './src/cal
             },
             function (ideal_routine_component_1_1) {
                 ideal_routine_component_1 = ideal_routine_component_1_1;
+            },
+            function (calendar_weeks_component_1_1) {
+                calendar_weeks_component_1 = calendar_weeks_component_1_1;
+            },
+            function (calendar_month_component_1_1) {
+                calendar_month_component_1 = calendar_month_component_1_1;
             }],
         execute: function() {
             WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Satarday'];
-            CalenderComponent = (function () {
-                function CalenderComponent(_daysService) {
+            CalendarComponent = (function () {
+                function CalendarComponent(_daysService) {
                     this._daysService = _daysService;
+                    this.monthDoings = [];
+                    this.editWeeksBoo = true;
                     this.idealText = "To the Ideal Routine";
                     this.isIdealRoutine = false;
                     this.showCurrent = false;
-                    this.week = WEEK;
+                    this.weekDays = WEEK;
+                    this.month = days_service_1.MONTH;
                     this.days = [];
                     this.header = [];
-                    this.days = _daysService.getDays();
-                    this.editededDay = this.days[0];
+                    this.month = _daysService.getMonth();
+                    this.monthDoings = this.month.doings;
+                    this.weeks = this.month.weeks;
+                    this.days = this.month.days;
+                    this.editedDay = this.days ? this.days[0] : null;
                     if (_daysService.getIdealRoutine()[0].doing) {
                         this.isIdealRoutine = !this.isIdealRoutine;
                     }
                 }
-                CalenderComponent.prototype.getHeader = function () {
-                    return this.week;
+                CalendarComponent.prototype.onSaveDay = function (e) {
+                    this._daysService.updateDay();
+                    this.selectedDay = this.days[e.index];
                 };
-                CalenderComponent.prototype.onBackToMonth = function (boolean) {
+                CalendarComponent.prototype.onEditWeeks = function (boo) {
+                    this.editWeeksBoo = boo;
+                };
+                CalendarComponent.prototype.onDoingDelete = function (i) {
+                    this.month.doings.splice(i, 1);
+                    this._daysService.updateDay();
+                };
+                CalendarComponent.prototype.onBackToMonth = function (boolean) {
                     this.showCurrent = boolean;
                 };
-                CalenderComponent.prototype.onSelectDay = function (day) {
+                CalendarComponent.prototype.onSelectDay = function (day) {
                     this.selectedDay = day;
                 };
-                CalenderComponent.prototype.onEditDay = function (day) {
-                    this.editededDay = day;
+                CalendarComponent.prototype.onEditDay = function (day) {
+                    this.editedDay = day;
                     this.showCurrent = true;
                 };
-                CalenderComponent.prototype.onIdealRoutineSave = function () {
+                CalendarComponent.prototype.onIdealRoutineSave = function () {
                     if (this.isIdealRoutine == false) {
                         this.idealText = "To the Ideal Routine";
                     }
                     this.isIdealRoutine = !this.isIdealRoutine;
                 };
-                CalenderComponent.prototype.onInputClick = function (week, day) {
-                    var newDay = { index: (this.days[this.days.length - 1].index) + 1, date: { year: 2016, month: 4, weekday: week, number: week * 7 + day + 1 }, doings: [] };
-                    this._daysService.insertDay(newDay);
-                };
-                CalenderComponent.prototype.ngAfterViewChecked = function () { };
                 __decorate([
                     core_1.Input(), 
                     __metadata('design:type', Number)
-                ], CalenderComponent.prototype, "rows", void 0);
+                ], CalendarComponent.prototype, "rows", void 0);
                 __decorate([
                     core_1.Input(), 
                     __metadata('design:type', Number)
-                ], CalenderComponent.prototype, "columns", void 0);
-                CalenderComponent = __decorate([
+                ], CalendarComponent.prototype, "columns", void 0);
+                CalendarComponent = __decorate([
                     core_1.Component({
                         selector: 'calendar',
                         providers: [days_service_1.DaysService],
-                        template: "\n    <h1>Calendar</h1><button class=\"btn calendar__to-ideal p-abs btn-default\" *ngIf=\"isIdealRoutine\" (click)=\"isIdealRoutine = false\">{{idealText}}</button>\n    <ideal-routine (idealRoutineSave)=\"onIdealRoutineSave()\" *ngIf=\"!isIdealRoutine\"></ideal-routine>\n    <div *ngIf=\"!showCurrent && isIdealRoutine\" class=\"calendar__month\">\n        <div class=\"calendar__cell\" *ngFor=\"#day of days\">\n            <p class=\"calendar__cell_date\">{{day.date.number < 10 ? 0 : ''}}{{day.date.number}}</p>\n            <p (click)=\"onEditDay(day)\" class=\"calendar__cell_add\">Edit</p>\n            <p (click)=\"onSelectDay(day)\" class=\"calendar__cell_doings-qty\">{{day.doings.length}}</p>\n        </div>\n    </div>\n    <shedule class=\"calendar__shedule\" [data]=\"selectedDay\" *ngIf=\"!showCurrent && selectedDay\"></shedule>\n    <current-day (backToMonth)=\"onBackToMonth(boolean)\" *ngIf=\"showCurrent\" class=\"calendar__current_day p-rel\" [data]=\"editededDay\"></current-day>\n    ",
-                        styles: [".calendar__to-ideal{margin:-44px 150px;}"],
-                        directives: [calendar_day_component_1.calendarDayComponent, calendar_shedule_component_1.calendarSheduleComponent, ideal_routine_component_1.idealRoutineComponent]
+                        template: "\n    <div class=\"col-xs-6\">\n        <h1>Calendar</h1><button class=\"btn calendar__to-ideal p-abs btn-default\" *ngIf=\"isIdealRoutine\" (click)=\"isIdealRoutine = false\">{{idealText}}</button>\n    </div>\n    <month *ngIf=\"isIdealRoutine\" class=\"col-xs-6 calendar__month_block\" [data]=\"monthDoings\"></month>\n    <ideal-routine (idealRoutineSave)=\"onIdealRoutineSave()\" *ngIf=\"!isIdealRoutine\"></ideal-routine>\n    <div *ngIf=\"!showCurrent && isIdealRoutine\" class=\"calendar__month calendar__month-{{editWeeksBoo}}\">\n        <div>\n            <div class=\"calendar__month_weekdays col-xs-9\">\n                <div class=\"btn calendar__month_weekdays-each\" *ngFor=\"#day of weekDays\">{{day}}</div>\n            </div>\n            <div class=\"col-xs-3 calendar__month_week left-silver\"><div class=\"calendar__month_week-inner btn btn-default\">Weeks</div></div>\n        </div>\n        <div class=\"col-xs-9 calendar__month_days\" *ngIf=\"editWeeksBoo\">\n            <div class=\"calendar__cell\" *ngFor=\"#day of days\">\n                <p class=\"calendar__cell_date\">{{day.date.number < 10 ? 0 : ''}}{{day.date.number}}</p>\n                <p (click)=\"onEditDay(day)\" class=\"calendar__cell_add\">Edit</p>\n                <p (click)=\"onSelectDay(day)\" class=\"calendar__cell_doings-qty\">{{day.doings.length}}</p>\n            </div>\n        </div>\n        <weeks (editWeeks)=\"onEditWeeks($event)\" class=\"col-xs-3 left-silver calendar__weeks\" [ngClass]=\"{calendar__weeks_edit: !editWeeksBoo}\" [data]=\"weeks\"></weeks>\n    </div>\n    <shedule (saveDay)=\"onSaveDay($event)\" class=\"calendar__shedule\" [data]=\"selectedDay\" *ngIf=\"!showCurrent && selectedDay\"></shedule>\n    <current-day (backToMonth)=\"onBackToMonth(boolean)\" *ngIf=\"showCurrent\" class=\"calendar__current_day p-rel\" [data]=\"editedDay\"></current-day>\n    ",
+                        styles: [".calendar__to-ideal{margin:-44px 150px;} .left-silver{border-left:1px solid silver;}"],
+                        directives: [calendar_day_component_1.calendarDayComponent, calendar_shedule_component_1.calendarSheduleComponent, ideal_routine_component_1.idealRoutineComponent, calendar_weeks_component_1.calendarWeeksComponent, calendar_month_component_1.calendarMonthComponent]
                     }), 
                     __metadata('design:paramtypes', [days_service_1.DaysService])
-                ], CalenderComponent);
-                return CalenderComponent;
+                ], CalendarComponent);
+                return CalendarComponent;
             }());
-            exports_1("CalenderComponent", CalenderComponent);
+            exports_1("CalendarComponent", CalendarComponent);
         }
     }
 });

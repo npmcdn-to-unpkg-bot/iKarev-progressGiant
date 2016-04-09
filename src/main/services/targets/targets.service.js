@@ -19,13 +19,12 @@ System.register(['angular2/core'], function(exports_1, context_1) {
             }],
         execute: function() {
             exports_1("LIFETARGET", LIFETARGET = { target: '', globalTargets: [{ target: '', role: '', longTargets: [{ target: '', shortTargets: [{ target: '', deadline: { year: 0, month: 0, weekday: 0, number: 0 }, doings: [], why: '' }] }] }] });
-            ;
             LifetargetService = (function () {
                 function LifetargetService() {
                     this.lifetarget = LIFETARGET;
                 }
                 LifetargetService.prototype.getTargets = function () {
-                    if (window.localStorage["lifetarget"] != null && window.localStorage["lifetarget"]) {
+                    if (window.localStorage["lifetarget"] != undefined && window.localStorage["lifetarget"]) {
                         this.lifetarget = JSON.parse(window.localStorage["lifetarget"]);
                     }
                     return this.lifetarget;

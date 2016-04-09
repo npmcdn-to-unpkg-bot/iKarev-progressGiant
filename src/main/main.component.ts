@@ -1,6 +1,6 @@
 import {Component, Input, Output, EventEmitter} from 'angular2/core'
 import {UiTabs, UiPane} from './main.ui_tabs'
-import {CalenderComponent} from './ui-tabs/calendar/calendar.component'
+import {CalendarComponent} from './ui-tabs/calendar/calendar.component'
 import {LifetargetComponent} from './ui-tabs/lifetarget/lifetarget.component'
 import {StatisticComponent} from './ui-tabs/stat/stat.component'
 
@@ -26,7 +26,7 @@ const positions = [{x:0,y:0,width:2,height:2},{x:0,y:2,width:5,height:1},{x:2,y:
       </template>
     </ui-tabs>
     `,
-    directives: [UiTabs, UiPane, StatisticComponent, CalenderComponent, LifetargetComponent]
+    directives: [UiTabs, UiPane, StatisticComponent, CalendarComponent, LifetargetComponent]
 })
 export class mainComponent {
   event:any = {pageX:1};

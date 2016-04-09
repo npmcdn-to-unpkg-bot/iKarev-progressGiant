@@ -1,5 +1,5 @@
 import {Component, View, OnInit, Input, Output, EventEmitter} from 'angular2/core'
-import {LifetargetService} from '../../services/targets/targets.service';
+import {LifetargetService, LIFETARGET} from '../../services/targets/targets.service';
 import {ILifeTarget, IGlobalTarget, ILongTarget, IShortTarget} from '../../services/app-types'
 import {shortTargetComponent} from './src/lifetarget-shorttargets.component'
 
@@ -77,10 +77,11 @@ export class LifetargetComponent {
     lifeTargetIsSet:boolean;
     globalTargetsIsSet:boolean;
     longTargetsIsSet:boolean;
-    lifeTarget:ILifeTarget = {target:'',globalTargets:[{target:'',role:'',longTargets:[{target:'',shortTargets:[{target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''}]}]}]};
+    lifeTarget:ILifeTarget = LIFETARGET;
     selectedLongTarget: ILongTarget = {target:'',shortTargets:[{target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''}]}
     constructor(private _lifetargetService: LifetargetService){
         this.lifeTarget = _lifetargetService.getTargets();
+        console.log(this.lifeTarget);
     }
     
     ngOnInit(){

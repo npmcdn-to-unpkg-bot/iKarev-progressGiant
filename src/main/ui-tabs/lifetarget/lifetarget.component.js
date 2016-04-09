@@ -30,9 +30,10 @@ System.register(['angular2/core', '../../services/targets/targets.service', './s
                     this.showLong = false;
                     this.showPlan = false;
                     this.text = 'Today you starts the path to the target of your whole life';
-                    this.lifeTarget = { target: '', globalTargets: [{ target: '', role: '', longTargets: [{ target: '', shortTargets: [{ target: '', deadline: { year: 0, month: 0, weekday: 0, number: 0 }, doings: [], why: '' }] }] }] };
+                    this.lifeTarget = targets_service_1.LIFETARGET;
                     this.selectedLongTarget = { target: '', shortTargets: [{ target: '', deadline: { year: 0, month: 0, weekday: 0, number: 0 }, doings: [], why: '' }] };
                     this.lifeTarget = _lifetargetService.getTargets();
+                    console.log(this.lifeTarget);
                 }
                 LifetargetComponent.prototype.ngOnInit = function () {
                     this.lifeTargetIsSet = this.lifeTarget.target ? true : false;

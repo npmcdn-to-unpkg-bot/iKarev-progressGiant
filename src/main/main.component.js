@@ -55,7 +55,7 @@ System.register(['angular2/core', './main.ui_tabs', './ui-tabs/calendar/calendar
                     core_1.Component({
                         selector: 'app',
                         template: "\n    <ui-tabs>\n      <template ui-pane title='Calendar' active=\"active\">\n        <calendar>Spreadsheet in loading...</calendar>\n      </template>\n      <template ui-pane title='Lifetarget'>\n        <lifetarget>Lifetarget in loading...</lifetarget>\n      </template>\n      <template ui-pane title='Statistic'>\n        <stat>Statistic in loading...</stat>\n      </template>\n    </ui-tabs>\n    ",
-                        directives: [main_ui_tabs_1.UiTabs, main_ui_tabs_1.UiPane, stat_component_1.StatisticComponent, calendar_component_1.CalenderComponent, lifetarget_component_1.LifetargetComponent]
+                        directives: [main_ui_tabs_1.UiTabs, main_ui_tabs_1.UiPane, stat_component_1.StatisticComponent, calendar_component_1.CalendarComponent, lifetarget_component_1.LifetargetComponent]
                     }), 
                     __metadata('design:paramtypes', [])
                 ], mainComponent);

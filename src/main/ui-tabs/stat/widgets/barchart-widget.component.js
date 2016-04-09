@@ -87,7 +87,7 @@ System.register(["angular2/core", "./highcharts-widget.component"], function(exp
                 for (var i in data) {
                     mergedData.categories.push(data[i].doing);
                     mergedData.ideal.push(data[i].time);
-                    mergedData.real.push(data[i].fullTime / 4);
+                    mergedData.real.push(data[i].fullTime / data[i].fullDays);
                 }
                 return {
                     xAxis: {

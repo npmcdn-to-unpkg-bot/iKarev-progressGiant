@@ -24,25 +24,18 @@ System.register(['angular2/core', '../../../services/days/days.service', '../../
                 targets_service_1 = targets_service_1_1;
             }],
         execute: function() {
-            template = "\n    <table class=\"table\">\n        <thead>\n            <tr>\n                <td class=\"ta-center\"><h3>Routine</h3></td>\n                <td class=\"ta-center\"><h3>Ideal time</h3></td>\n                <td class=\"ta-center\"><h3>Today time</h3></td>\n                <td class=\"ta-center\"><h3>Targets</h3></td>\n            </tr>\n        </thead>\n        <tbody>\n            <tr *ngFor=\"#r of idealRoutine; #i = index\">\n                <td>{{r.doing}}</td>\n                <td class=\"ta-center\">{{r.time}}</td>\n                <td><input  class=\"ta-center\" [(ngModel)]=\"todayRoutine[i].time\" type=\"number\" value=\"\" /></td>\n                <td *ngIf=\"i == 0\" [attr.rowspan]=\"idealRoutine.length\">\n                    <div  class=\"ta-center\" *ngFor=\"#doing of data.doings\">\n                        <label class=\"calendar__routine_label\">{{doing.description}}</label><input type=\"checkbox\" [(ngModel)]=\"doing.done\" />\n                    </div>    \n                </td>\n            </tr>\n        </tbody>\n    </table>\n    <div class=\"btn btn-success\" (click)=\"onSaveDay(data)\">Save changes</div>\n";
+            template = "\n    <table class=\"table day-edited-{{data.done}}\">\n        <thead>\n            <tr>\n                <td class=\"ta-center\"><h3>Routine</h3></td>\n                <td class=\"ta-center\"><h3>Ideal time</h3></td>\n                <td class=\"ta-center\"><h3>Today time</h3></td>\n                <td class=\"ta-center\"><h3>Targets</h3></td>\n            </tr>\n        </thead>\n        <tbody>\n            <tr *ngFor=\"#r of idealRoutine; #i = index\">\n                <td>{{r.doing}}</td>\n                <td class=\"ta-center\">{{r.time}}</td>\n                <td>\n                    <input *ngIf=\"data.done\" disabled class=\"ta-center\" [(ngModel)]=\"todayRoutine[i].time\" type=\"number\" value=\"\" />\n                    <input *ngIf=\"!data.done\" class=\"ta-center\" [(ngModel)]=\"todayRoutine[i].time\" type=\"number\" value=\"\" />\n                </td>\n                <td *ngIf=\"i == 0\" [attr.rowspan]=\"idealRoutine.length\">\n                    <div  class=\"ta-center\" *ngFor=\"#doing of data.doings\">\n                        <label class=\"calendar__routine_label\">{{doing.description}}</label><input type=\"checkbox\" [(ngModel)]=\"doing.done\" />\n                    </div>    \n                </td>\n            </tr>\n        </tbody>\n    </table>\n    <div class=\"btn btn-success\" (click)=\"onSaveDay(data)\">Save changes</div>\n";
             styles = "";
             calendarSheduleComponent = (function () {
                 function calendarSheduleComponent(_daysService, _lifetargetService) {
                     this._daysService = _daysService;
                     this._lifetargetService = _lifetargetService;
-                    this.todayRoutine = [];
+                    this.saveDay = new core_1.EventEmitter();
                     this.lifeTarget = this._lifetargetService.getTargets();
                     this.idealRoutine = this._daysService.getIdealRoutine();
-                    this.todayRoutine = this.idealRoutine
-                        .map(function (global) {
-                        return {
-                            doing: global.doing,
-                            time: ''
-                        };
-                    });
                 }
                 calendarSheduleComponent.prototype.ngOnChanges = function () {
-                    this.todayRoutine = this.idealRoutine
+                    this.todayRoutine = this.data.routine[0].doing ? this.data.routine : this.idealRoutine
                         .map(function (global) {
                         return {
                             doing: global.doing,
@@ -50,11 +43,15 @@ System.register(['angular2/core', '../../../services/days/days.service', '../../
                         };
                     });
                 };
-                calendarSheduleComponent.prototype.onSaveDay = function () {
+                calendarSheduleComponent.prototype.onSaveDay = function (day) {
+                    day.done = true;
+                    day.routine = this.todayRoutine;
+                    this.saveDay.emit(day);
                     var ir = this.idealRoutine;
                     var tr = this.todayRoutine;
                     for (var i in ir) {
                         this.idealRoutine[i].fullTime += tr[i].time;
+                        this.idealRoutine[i].fullDays += 1;
                     }
                     this._daysService.updateIdealRoutine(this.idealRoutine);
                 };
@@ -62,6 +59,10 @@ System.register(['angular2/core', '../../../services/days/days.service', '../../
                     core_1.Input(), 
                     __metadata('design:type', Object)
                 ], calendarSheduleComponent.prototype, "data", void 0);
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], calendarSheduleComponent.prototype, "saveDay", void 0);
                 calendarSheduleComponent = __decorate([
                     core_1.Component({
                         selector: 'shedule',

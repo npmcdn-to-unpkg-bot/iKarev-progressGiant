@@ -71,6 +71,7 @@
                         width: 162px;
                         border: 1px solid silver;
                         z-index: 9;
+                        background: #fff;
                     }
                     &-button{
                         font-weight: 600;
@@ -154,13 +155,61 @@
     &__month{
         float: left;
         width: 100%;
-        max-height: 103px;
+        max-height: 200px;
+        border: 1px solid silver;
         overflow-y: scroll;
         overflow-x: hidden;
+        &_weekdays{
+            &-each{
+                width: 10%;
+                margin: 10px 2.1%;
+            }
+        }
+        &-false{
+            max-height: none;
+        }
+        &_block{
+            padding-bottom: 20px;
+            border-left: 1px solid silver;
+        }
+        &_edit{
+            margin: -40px 210px;
+        }
+        &_week{
+            height: 53px;
+            &-inner{
+                border: 0px;
+                margin: 10px auto;
+                display: block;
+            }
+        }
     }
     &__routine{
         &_label{
             width: 150px;
+        }
+    }
+    &__weeks{
+        padding-top: 40px;
+        &_block{
+            border: 1px solid silver;
+            width: 100%;
+            overflow-y: scroll;
+            margin: 10px 0 16px;
+            max-height: 84px;
+            min-height: 84px;
+            border-radius: 2px;
+            &-edit{
+                max-height: none;
+            }
+        }
+        &_edit{
+            width: 100%;
+            background-color: white;
+            &-button{
+                position: absolute;
+                margin-top: -32px;
+            }
         }
     }
 }
@@ -335,6 +384,47 @@
         }
     }
 }
+
+.month-select{
+    & .calendar__current{
+        &_form{
+            &-label{
+            }
+            &-select{
+                &-global{
+                    &-content{
+                        margin: -40px -162px;
+                    }
+                    &-button{
+                        &:hover{
+                        }
+                    }
+                }
+                &-long{
+                    &-content{
+                        margin: -41px -150px;
+                        padding: 10px;
+                        background: #fff;
+                        border: 1px solid silver;
+                    }
+                    &-button{
+                        &:hover{
+                        }
+                    }
+                }
+                &-short{
+                    &-button{
+                        text-align: right;
+                        width: 100%;
+                        &:hover{
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 current-day{
     margin-top: 20px;

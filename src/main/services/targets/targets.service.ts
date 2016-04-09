@@ -1,14 +1,14 @@
 import {Injectable} from 'angular2/core'
 import {ILifeTarget} from '../app-types'
 
-export const LIFETARGET: ILifeTarget = {target:'',globalTargets:[{target:'',role:'',longTargets:[{target:'',shortTargets:[{target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''}]}]}]};;
+export const LIFETARGET: ILifeTarget = {target:'',globalTargets:[{target:'',role:'',longTargets:[{target:'',shortTargets:[{target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''}]}]}]};
 
 
 @Injectable()
 export class LifetargetService{
     lifetarget:ILifeTarget = LIFETARGET;
     getTargets() {
-        if (window.localStorage["lifetarget"] != null && window.localStorage["lifetarget"]) {
+        if (window.localStorage["lifetarget"] != undefined && window.localStorage["lifetarget"]) {
             this.lifetarget = JSON.parse(window.localStorage["lifetarget"]);
         }
         return this.lifetarget;

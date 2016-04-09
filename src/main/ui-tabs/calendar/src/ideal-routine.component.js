@@ -21,7 +21,7 @@ System.register(['angular2/core', '../../../services/days/days.service'], functi
                 days_service_1 = days_service_1_1;
             }],
         execute: function() {
-            template = "\n    <h3 class=\"col-xs-8\">Before you started use calendar, you have to understand, how do you want your ideal day looks like. It's important to understand, that it will be your absolutle common day, it's not a party and not a holiday. Just one day in a long list of others. And all of them will be like this day. And all of them will be ideal. What could you do in your ideal day? <br/> Type below your main doings, and the time you spend on it.</h3>\n    <table class=\"table\">\n        <thead>\n            <tr>\n                <td>Doings</td>\n                <td>Time</td>\n            </tr>\n        </thead>\n        <tbody>\n            <tr *ngFor=\"#doing of doings; #i = index\">\n                <td>\n                    <input class=\"calender__iroutine_doing\" [(ngModel)]=\"doing.doing\" />\n                </td>\n                <td>\n                    <input type=\"number\" class=\"calender__iroutine_time\" [(ngModel)]=\"doing.time\" />\n                    <div *ngIf=\"doings.length > 1\" class=\"btn p-abs calender__iroutine_delete btn-danger\" (click)=\"inDoingDelete(i)\">X</div>\n                </td>\n            </tr>\n        </tbody>\n    </table>\n    <button class=\"btn btn-success\" (click)=\"onAddDoing()\">Add doing</button>\n    <button class=\"btn btn-primary\" (click)=\"onSaveIdealRoutine()\">Save your ideal routine</button>";
+            template = "\n    <h3 class=\"col-xs-8\">Before you started use calendar, you have to understand, how do you want your ideal day looks like. It's important to understand, that it will be your absolutle common day, it's not a party and not a holiday. Just one day in a long list of others. And all of them will be like this day. And all of them will be ideal. What could you do in your ideal day? <br/> Type below your main doings, and the time you spend on it.</h3>\n    <table class=\"table\">\n        <thead>\n            <tr>\n                <td>Doings</td>\n                <td>Time</td>\n            </tr>\n        </thead>\n        <tbody>\n            <tr *ngFor=\"#doing of doings; #i = index\">\n                <td>\n                    <input class=\"calender__iroutine_doing\" [(ngModel)]=\"doing.doing\" />\n                </td>\n                <td>\n                    <input type=\"number\" class=\"calender__iroutine_time\" [(ngModel)]=\"doing.time\" />\n                    <div *ngIf=\"doings.length > 1\" class=\"btn p-abs calender__iroutine_delete btn-danger\" (click)=\"onDoingDelete(i)\">X</div>\n                </td>\n            </tr>\n        </tbody>\n    </table>\n    <button class=\"btn btn-success\" (click)=\"onAddDoing()\">Add doing</button>\n    <button class=\"btn btn-primary\" (click)=\"onSaveIdealRoutine()\">Save your ideal routine</button>";
             styles = "\n        .calender__iroutine_doing{width:100%;}\n        .calender__iroutine_delete{margin: -5px 0 0 7px;}";
             idealRoutineComponent = (function () {
                 function idealRoutineComponent(_daysService) {
@@ -30,9 +30,9 @@ System.register(['angular2/core', '../../../services/days/days.service'], functi
                     this.doings = _daysService.getIdealRoutine();
                 }
                 idealRoutineComponent.prototype.onAddDoing = function () {
-                    this.doings.push({ doing: '', time: 0, fullTime: 0 });
+                    this.doings.push({ doing: '', time: 0, fullTime: 0, fullDays: 0 });
                 };
-                idealRoutineComponent.prototype.inDoingDelete = function (i) {
+                idealRoutineComponent.prototype.onDoingDelete = function (i) {
                     this.doings.splice(i, 1);
                 };
                 idealRoutineComponent.prototype.onSaveIdealRoutine = function () {

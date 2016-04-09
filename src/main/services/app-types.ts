@@ -1,17 +1,29 @@
 export interface IDay{
-    index:number,
-    date:IDate,
-    doings: IDoing[]
+    index: number;
+    date: IDate;
+    doings: IDoing[];
+    routine: IDayRoutine[];
+    done: boolean;
 };
 
+export interface IDayRoutine{
+    doing:string;
+    time:number;
+}
+
 export interface IWeek{
-    days:IDay[];
-    doing:IDoing;
+    doings:IDoing[]
 }
 
 export interface IMonth{
+    days:IDay[];
     weeks:IWeek[];
-    doing:IDoing;
+    doings:IDoing[];
+}
+
+export interface ISaveDay {
+    day: IDay;
+    done: boolean;
 }
 
 export interface IDoing{
@@ -25,6 +37,7 @@ export interface IIdealRoutine{
     doing:string;
     time:number;
     fullTime:number;
+    fullDays:number;
 }
 
 export interface IHighCharts {}

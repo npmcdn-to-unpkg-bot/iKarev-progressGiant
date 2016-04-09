@@ -17,7 +17,7 @@ const template = `
                 </td>
                 <td>
                     <input type="number" class="calender__iroutine_time" [(ngModel)]="doing.time" />
-                    <div *ngIf="doings.length > 1" class="btn p-abs calender__iroutine_delete btn-danger" (click)="inDoingDelete(i)">X</div>
+                    <div *ngIf="doings.length > 1" class="btn p-abs calender__iroutine_delete btn-danger" (click)="onDoingDelete(i)">X</div>
                 </td>
             </tr>
         </tbody>
@@ -41,9 +41,9 @@ export class idealRoutineComponent{
         this.doings = _daysService.getIdealRoutine();
     }
     onAddDoing(){
-        this.doings.push({doing:'',time:0, fullTime:0});
+        this.doings.push({doing:'',time:0, fullTime:0, fullDays:0});
     }
-    inDoingDelete(i){
+    onDoingDelete(i){
         this.doings.splice(i,1);
     }
     onSaveIdealRoutine(){
