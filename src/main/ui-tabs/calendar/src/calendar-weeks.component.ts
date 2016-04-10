@@ -50,7 +50,7 @@ export class calendarWeeksComponent{
     }
     
     onWeekDoingAdd(week, doing){
-        week.doings.push({description:'',important:false,urgent:false,target:''});
+        week.doings.push({description:'',important:false,urgent:false,target:'',time:0});
         this._daysService.updateWeeks(this.data);
     }
     

@@ -31,6 +31,14 @@ const template = `
                     />
                 </div>
                 <div>
+                    <label class="calendar__current_form-label" for="newdoing-time">Plan Time</label>
+                    <input type="number" id="newdoing-time" 
+                        required 
+                        ngControl="timeControl" 
+                        [(ngModel)]="newDoing.time"
+                    />
+                </div>
+                <div>
                     <label class="calendar__current_form-label" for="newdoing-target">Choose target</label>
                     <input id="newdoing-target" 
                         required 
@@ -73,7 +81,7 @@ export class calendarDayComponent{
     shortIndex;
     @Output() backToMonth = new EventEmitter<boolean>();
     @Input() data;
-    newDoing: IDoing = {description:'',important: false, target:'', urgent: false};
+    newDoing: IDoing = {description:'',important: false, target:'', urgent: false, time:0};
     constructor(private _daysService: DaysService, private _lifetargetService: LifetargetService){}
     
     ngOnInit(){
@@ -108,7 +116,8 @@ export class calendarDayComponent{
             description:newDo.description,
             important: newDo.important,
             urgent: newDo.urgent,
-            target:newDo.target
+            target:newDo.target,
+            time: newDo.time
         }
         this.lifeTarget.globalTargets[this.globalIndex].longTargets[this.longIndex].shortTargets[this.shortIndex].doings.push(newDoing);
         this._daysService.insertDoing(i, newDoing);

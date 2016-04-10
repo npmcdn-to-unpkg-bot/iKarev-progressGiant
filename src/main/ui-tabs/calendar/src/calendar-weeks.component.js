@@ -39,7 +39,7 @@ System.register(['angular2/core', '../../../services/days/days.service'], functi
                     this._daysService.updateWeeks(this.data);
                 };
                 calendarWeeksComponent.prototype.onWeekDoingAdd = function (week, doing) {
-                    week.doings.push({ description: '', important: false, urgent: false, target: '' });
+                    week.doings.push({ description: '', important: false, urgent: false, target: '', time: 0 });
                     this._daysService.updateWeeks(this.data);
                 };
                 calendarWeeksComponent.prototype.onEditWeekDoings = function (boo) {

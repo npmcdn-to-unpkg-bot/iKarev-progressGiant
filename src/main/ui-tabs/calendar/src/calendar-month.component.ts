@@ -66,7 +66,7 @@ export class calendarMonthComponent{
     }
     
     onMonthDoingAdd(doing){
-        this.data.push({description:'',important:false,urgent:false,target:''});
+        this.data.push({description:'',important:false,urgent:false,target:'',time:0});
         this.lifeTarget.globalTargets[this.globalIndex].longTargets[this.longIndex].shortTargets[this.shortIndex].doings.push(doing);
         this._daysService.updateMonthDoings(this.data);
         this._lifetargetService.updateLifeTarget(this.lifeTarget);

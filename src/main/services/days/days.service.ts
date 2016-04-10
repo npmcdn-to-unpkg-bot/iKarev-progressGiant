@@ -3,7 +3,7 @@ import {IDay, IDoing, IMonth, IIdealRoutine, IWeek} from '../app-types'
 
 export const DAYS: IDay[] = [];
 export const MONTH: IMonth = {days:[],weeks:[],doings:[]};
-export const WEEK: IWeek[] = [{doings:[{description:'',important:true,urgent:true,target:''}]}];
+export const WEEK: IWeek[] = [{doings:[{description:'',important:true,urgent:true,target:'',time:0}]}];
 export const IDEAL_ROUTINE: IIdealRoutine[] = [];
 
 @Injectable()
@@ -16,12 +16,12 @@ export class DaysService{
         if (window.localStorage["weeks"] != undefined && window.localStorage["weeks"]) {
             this.month.weeks = JSON.parse(window.localStorage["weeks"]);
         } else {
-            this.month.weeks = [{doings:[{description:'',important:true,urgent:true,target:''}]},{doings:[{description:'',important:true,urgent:true,target:''}]},{doings:[{description:'',important:true,urgent:true,target:''}]},{doings:[{description:'',important:true,urgent:true,target:''}]},{doings:[{description:'',important:true,urgent:true,target:''}]}];
+            this.month.weeks = [{doings:[{description:'',important:true,urgent:true,target:'',time:0}]},{doings:[{description:'',important:true,urgent:true,target:'',time:0}]},{doings:[{description:'',important:true,urgent:true,target:'',time:0}]},{doings:[{description:'',important:true,urgent:true,target:'',time:0}]},{doings:[{description:'',important:true,urgent:true,target:'',time:0}]}];
         }
         if (window.localStorage["doings"] != undefined && window.localStorage["doings"]) {
             this.month.doings = JSON.parse(window.localStorage["doings"]);
         } else {
-            this.month.doings = [{description:'Go ahead',important:true,urgent:true,target:'gogo'}];
+            this.month.doings = [{description:'',important:true,urgent:true,target:'',time:0}];
         }
         
         if (window.localStorage["days"] != undefined && window.localStorage["days"]) {

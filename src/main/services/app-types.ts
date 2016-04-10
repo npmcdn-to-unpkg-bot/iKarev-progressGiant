@@ -30,7 +30,8 @@ export interface IDoing{
     description:string,
     important: boolean,
     urgent: boolean,
-    target: string
+    target: string,
+    time:number;
 };
 
 export interface IIdealRoutine{

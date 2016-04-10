@@ -1,4 +1,6 @@
 .calendar{
+    display: block;
+    padding-bottom:40px;
     &__cell{
         border: 1px solid silver;
         width:10%;
