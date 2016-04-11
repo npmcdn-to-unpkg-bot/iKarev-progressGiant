@@ -20,7 +20,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
         execute: function() {
             exports_1("DAYS", DAYS = []);
             exports_1("MONTH", MONTH = { days: [], weeks: [], doings: [] });
-            exports_1("WEEK", WEEK = [{ doings: [{ description: '', important: true, urgent: true, target: '', time: 0 }] }]);
+            exports_1("WEEK", WEEK = [{ doings: [{ description: '', important: true, urgent: true, global: 0, target: '', time: 0 }] }]);
             exports_1("IDEAL_ROUTINE", IDEAL_ROUTINE = []);
             DaysService = (function () {
                 function DaysService() {
@@ -33,13 +33,13 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                         this.month.weeks = JSON.parse(window.localStorage["weeks"]);
                     }
                     else {
-                        this.month.weeks = [{ doings: [{ description: '', important: true, urgent: true, target: '', time: 0 }] }, { doings: [{ description: '', important: true, urgent: true, target: '', time: 0 }] }, { doings: [{ description: '', important: true, urgent: true, target: '', time: 0 }] }, { doings: [{ description: '', important: true, urgent: true, target: '', time: 0 }] }, { doings: [{ description: '', important: true, urgent: true, target: '', time: 0 }] }];
+                        this.month.weeks = [{ doings: [{ description: '', important: true, urgent: true, global: 0, target: '', time: 0 }] }, { doings: [{ description: '', important: true, urgent: true, global: 0, target: '', time: 0 }] }, { doings: [{ description: '', important: true, urgent: true, global: 0, target: '', time: 0 }] }, { doings: [{ description: '', important: true, urgent: true, global: 0, target: '', time: 0 }] }, { doings: [{ description: '', important: true, urgent: true, global: 0, target: '', time: 0 }] }];
                     }
                     if (window.localStorage["doings"] != undefined && window.localStorage["doings"]) {
                         this.month.doings = JSON.parse(window.localStorage["doings"]);
                     }
                     else {
-                        this.month.doings = [{ description: '', important: true, urgent: true, target: '', time: 0 }];
+                        this.month.doings = [{ description: '', important: true, urgent: true, target: '', global: 0, time: 0 }];
                     }
                     if (window.localStorage["days"] != undefined && window.localStorage["days"]) {
                         this.month.days = JSON.parse(window.localStorage["days"]);

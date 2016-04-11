@@ -1,4 +1,4 @@
-System.register(['angular2/core', '../../services/days/days.service', './widgets/barchart-widget.component'], function(exports_1, context_1) {
+System.register(['angular2/core', '../../services/days/days.service', '../../services/targets/targets.service', './widgets/barchart-widget.component', './widgets/donutchart-widget.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/core', '../../services/days/days.service', './widgets
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, days_service_1, barchart_widget_component_1;
+    var core_1, days_service_1, targets_service_1, barchart_widget_component_1, donutchart_widget_component_1;
     var template, styles, StatisticComponent;
     return {
         setters:[
@@ -20,27 +20,35 @@ System.register(['angular2/core', '../../services/days/days.service', './widgets
             function (days_service_1_1) {
                 days_service_1 = days_service_1_1;
             },
+            function (targets_service_1_1) {
+                targets_service_1 = targets_service_1_1;
+            },
             function (barchart_widget_component_1_1) {
                 barchart_widget_component_1 = barchart_widget_component_1_1;
+            },
+            function (donutchart_widget_component_1_1) {
+                donutchart_widget_component_1 = donutchart_widget_component_1_1;
             }],
         execute: function() {
-            template = "\n    <div class=\"widget-item-view\">\n        <barchart-widget [data]=\"routine\"></barchart-widget>\n    </div>";
+            template = "\n    <div class=\"widget-item-view\">\n        <barchart-widget [data]=\"routine\"></barchart-widget>\n        <donutchart-widget [data]=\"globalTargets\"></donutchart-widget>\n    </div>";
             styles = "";
             //*ngIf="type == 'BarChart'" 
             StatisticComponent = (function () {
-                function StatisticComponent(_daysService) {
+                function StatisticComponent(_daysService, _lifetargetService) {
                     this._daysService = _daysService;
+                    this._lifetargetService = _lifetargetService;
+                    this.globalTargets = _lifetargetService.getTargets().globalTargets;
                     this.routine = _daysService.getIdealRoutine();
                 }
                 StatisticComponent = __decorate([
                     core_1.Component({
                         selector: 'stat',
-                        providers: [days_service_1.DaysService],
+                        providers: [days_service_1.DaysService, targets_service_1.LifetargetService],
                         template: template,
                         styles: [styles],
-                        directives: [barchart_widget_component_1.BarchartWidgetComponent]
+                        directives: [barchart_widget_component_1.BarchartWidgetComponent, donutchart_widget_component_1.DonutchartWidgetComponent]
                     }), 
-                    __metadata('design:paramtypes', [days_service_1.DaysService])
+                    __metadata('design:paramtypes', [days_service_1.DaysService, targets_service_1.LifetargetService])
                 ], StatisticComponent);
                 return StatisticComponent;
             }());

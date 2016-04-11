@@ -40,6 +40,7 @@ System.register(['angular2/core', '../../../services/days/days.service', '../../
                     this.idealRoutine = this._daysService.getIdealRoutine();
                 }
                 calendarSheduleComponent.prototype.ngOnChanges = function () {
+                    console.log(this.data);
                     this.todayRoutine = this.data.routine[0].doing ? this.data.routine : this.idealRoutine
                         .map(function (global) {
                         return {
@@ -64,7 +65,6 @@ System.register(['angular2/core', '../../../services/days/days.service', '../../
                     }
                 };
                 calendarSheduleComponent.prototype.onSaveDay = function (day) {
-                    console.log('1313');
                     if (!this.fullTime.toomuch) {
                         day.done = true;
                         day.routine = this.todayRoutine;

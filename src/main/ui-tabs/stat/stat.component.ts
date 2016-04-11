@@ -1,11 +1,14 @@
 import {Component, AfterViewChecked, Input, NgZone} from 'angular2/core';
 import {DaysService} from '../../services/days/days.service';
-import {IDay} from '../../services/app-types'
+import {LifetargetService, LIFETARGET} from '../../services/targets/targets.service';
+import {IDay, IIdealRoutine, ILifeTarget, IGlobalTarget} from '../../services/app-types'
 import {BarchartWidgetComponent} from './widgets/barchart-widget.component'
+import {DonutchartWidgetComponent} from './widgets/donutchart-widget.component'
 
 const template = `
     <div class="widget-item-view">
         <barchart-widget [data]="routine"></barchart-widget>
+        <donutchart-widget [data]="globalTargets"></donutchart-widget>
     </div>`
 const styles = ``
 
@@ -13,15 +16,17 @@ const styles = ``
 
 @Component({
     selector: 'stat',
-    providers:[DaysService],
+    providers:[DaysService, LifetargetService],
     template: template,
     styles:[styles],
-    directives:[BarchartWidgetComponent]
+    directives:[BarchartWidgetComponent, DonutchartWidgetComponent]
 })
 
 export class StatisticComponent {
-    routine;
-    constructor(private _daysService: DaysService){
+    routine: IIdealRoutine[];
+    globalTargets: IGlobalTarget[];
+    constructor(private _daysService: DaysService, private _lifetargetService: LifetargetService){
+        this.globalTargets = _lifetargetService.getTargets().globalTargets;
         this.routine = _daysService.getIdealRoutine();
     }
 }

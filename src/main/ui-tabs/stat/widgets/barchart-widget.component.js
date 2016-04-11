@@ -107,7 +107,6 @@ System.register(["angular2/core", "./highcharts-widget.component"], function(exp
                 }
                 BarchartWidgetComponent.prototype.ngOnInit = function () {
                     this.htData = HIGHCHARTS_GAUGE_OPTIONS;
-                    console.log(this.data);
                     this.htData = Highcharts.merge(HIGHCHARTS_GAUGE_OPTIONS, routineMap(this.data));
                 };
                 __decorate([

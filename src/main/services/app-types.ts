@@ -29,6 +29,7 @@ export interface ISaveDay {
 export interface IDoing{
     description:string,
     important: boolean,
+    global: number;
     urgent: boolean,
     target: string,
     time:number;

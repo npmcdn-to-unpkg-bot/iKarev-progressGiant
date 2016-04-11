@@ -98,7 +98,6 @@ export class BarchartWidgetComponent {
     private htData;
     ngOnInit(){
         this.htData = HIGHCHARTS_GAUGE_OPTIONS;
-        console.log(this.data);
         this.htData = (<any>Highcharts).merge(HIGHCHARTS_GAUGE_OPTIONS, routineMap(this.data));
     }
 }

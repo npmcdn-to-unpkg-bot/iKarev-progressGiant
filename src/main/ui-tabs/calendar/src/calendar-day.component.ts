@@ -81,7 +81,7 @@ export class calendarDayComponent{
     shortIndex;
     @Output() backToMonth = new EventEmitter<boolean>();
     @Input() data;
-    newDoing: IDoing = {description:'',important: false, target:'', urgent: false, time:0};
+    newDoing: IDoing = {description:'',important: false, target:'', urgent: false, global: 0, time: 0};
     constructor(private _daysService: DaysService, private _lifetargetService: LifetargetService){}
     
     ngOnInit(){
@@ -100,7 +100,7 @@ export class calendarDayComponent{
     onSelectShortTarget(obj){
         this.newDoing.target = obj.content.target;
         this.selectTargetIsActive = false;
-        console.log(obj.content);
+        console.log(obj);
         this.globalIndex = obj.global;
         this.longIndex = obj.long;
         this.shortIndex = obj.short;
@@ -116,6 +116,7 @@ export class calendarDayComponent{
             description:newDo.description,
             important: newDo.important,
             urgent: newDo.urgent,
+            global: this.globalIndex,
             target:newDo.target,
             time: newDo.time
         }

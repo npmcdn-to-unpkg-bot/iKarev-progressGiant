@@ -69,6 +69,7 @@ export class calendarSheduleComponent {
     }
     
     ngOnChanges(){
+        console.log(this.data)
         this.todayRoutine = this.data.routine[0].doing ? this.data.routine : this.idealRoutine
             .map(function(global){
                 return {
@@ -93,7 +94,6 @@ export class calendarSheduleComponent {
     }
     
     onSaveDay(day){
-        console.log('1313');
         if(!this.fullTime.toomuch){
             day.done = true;
             day.routine = this.todayRoutine;

@@ -33,7 +33,7 @@ System.register(['angular2/core', '../../../services/days/days.service', '../../
                     this._daysService = _daysService;
                     this._lifetargetService = _lifetargetService;
                     this.backToMonth = new core_1.EventEmitter();
-                    this.newDoing = { description: '', important: false, target: '', urgent: false, time: 0 };
+                    this.newDoing = { description: '', important: false, target: '', urgent: false, global: 0, time: 0 };
                 }
                 calendarDayComponent.prototype.ngOnInit = function () {
                     this.lifeTarget = this._lifetargetService.getTargets();
@@ -48,7 +48,7 @@ System.register(['angular2/core', '../../../services/days/days.service', '../../
                 calendarDayComponent.prototype.onSelectShortTarget = function (obj) {
                     this.newDoing.target = obj.content.target;
                     this.selectTargetIsActive = false;
-                    console.log(obj.content);
+                    console.log(obj);
                     this.globalIndex = obj.global;
                     this.longIndex = obj.long;
                     this.shortIndex = obj.short;
@@ -63,6 +63,7 @@ System.register(['angular2/core', '../../../services/days/days.service', '../../
                         description: newDo.description,
                         important: newDo.important,
                         urgent: newDo.urgent,
+                        global: this.globalIndex,
                         target: newDo.target,
                         time: newDo.time
                     };
