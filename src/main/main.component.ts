@@ -42,7 +42,6 @@ export class mainComponent {
       this.event = event;
   }
   onPositionChanged(e){
-      console.log(e);
   }
   
 }

@@ -8,6 +8,13 @@ const template = `
         <form #newDoingForm="ngForm" class="col-xs-5 calendar__current_form">
             <h3>New Doing</h3>
             <div class="col-xs-12">
+                <div *ngIf="!mainTargetIsSet">
+                    <label class="calendar__current_form-label" for="newdoing-main">Main target?</label>
+                    <input type="checkbox" id="newdoing-main"
+                        ngControl="mainControl" 
+                        [(ngModel)]="newDoing.main"
+                    />
+                </div>
                 <div>
                     <label class="calendar__current_form-label" for="newdoing-important">Is it important?</label>
                     <input type="checkbox" id="newdoing-important"
@@ -31,14 +38,6 @@ const template = `
                     />
                 </div>
                 <div>
-                    <label class="calendar__current_form-label" for="newdoing-time">Plan Time</label>
-                    <input type="number" id="newdoing-time" 
-                        required 
-                        ngControl="timeControl" 
-                        [(ngModel)]="newDoing.time"
-                    />
-                </div>
-                <div>
                     <label class="calendar__current_form-label" for="newdoing-target">Choose target</label>
                     <input id="newdoing-target" 
                         required 
@@ -59,9 +58,9 @@ const template = `
             <div class="col-xs-12">
                 <div *ngFor="#doing of data.doings; #i = index" class="calendar__current_line">
                     <input class="calendar__current_doing" [(ngModel)]="doing.description" />
+                    <span (click)="onChangeMainDoing(doing)" *ngIf="(doing.main && mainTargetIsSet) || (!doing.main && !mainTargetIsSet)" class="calendar__current_doing_label calendar__current_doing_main-{{doing.main}}">M</span>
                     <span class="calendar__current_doing_label calendar__current_doing_important-{{doing.important}}">I</span>
                     <span class="calendar__current_doing_label calendar__current_doing_urgent-{{doing.urgent}}">U</span>
-                    <input class="calendar__current_plantime" value="{{doing.planTime}}" />
                     <div (click)="onDoingDelete(i)" class="btn btn-danger calendar__current_delete">X</div>
                 </div>
             </div>
@@ -76,16 +75,20 @@ const template = `
 export class calendarDayComponent{
     selectTargetIsActive: boolean;
     lifeTarget: ILifeTarget;
+    mainTargetIsSet: boolean = false;
     globalIndex;
     longIndex;
     shortIndex;
     @Output() backToMonth = new EventEmitter<boolean>();
     @Input() data;
-    newDoing: IDoing = {description:'',important: false, target:'', urgent: false, global: 0, time: 0};
+    newDoing: IDoing = {month:0, description:'',important: false, target:'', urgent: false, main: false, global: 0, time: 0};
     constructor(private _daysService: DaysService, private _lifetargetService: LifetargetService){}
     
     ngOnInit(){
         this.lifeTarget = this._lifetargetService.getTargets();
+        for(var i in this.data.doings){
+            if(this.data.doings[i].main == true) this.mainTargetIsSet = true;
+        }
     }
     
     onBackButton(){
@@ -97,16 +100,21 @@ export class calendarDayComponent{
         this._daysService.updateDay();
     }
     
+    onChangeMainDoing(doing){
+        if(doing.main) {doing.main = false; this.mainTargetIsSet = false;}
+        else {doing.main = true; this.mainTargetIsSet = true;}
+    }
+    
     onSelectShortTarget(obj){
         this.newDoing.target = obj.content.target;
         this.selectTargetIsActive = false;
-        console.log(obj);
         this.globalIndex = obj.global;
         this.longIndex = obj.long;
         this.shortIndex = obj.short;
     }
     
     onDoingAdd(i, newDo, event){
+        if(newDo.main == true) this.mainTargetIsSet = true;
         var targets = this.lifeTarget.globalTargets;
         for(let i in targets){
             if(targets[i].target == newDo.target){
@@ -117,11 +125,13 @@ export class calendarDayComponent{
             important: newDo.important,
             urgent: newDo.urgent,
             global: this.globalIndex,
+            main: newDo.main,
             target:newDo.target,
-            time: newDo.time
+            time: newDo.time,
+            month: this.data.month
         }
         this.lifeTarget.globalTargets[this.globalIndex].longTargets[this.longIndex].shortTargets[this.shortIndex].doings.push(newDoing);
-        this._daysService.insertDoing(i, newDoing);
+        this._daysService.insertDoing(i, newDoing, this.data.date.month);
         this._lifetargetService.updateLifeTarget(this.lifeTarget);
     }
     

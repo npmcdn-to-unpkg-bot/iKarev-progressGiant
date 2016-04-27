@@ -21,32 +21,42 @@ System.register(['angular2/core', '../../../services/days/days.service'], functi
                 days_service_1 = days_service_1_1;
             }],
         execute: function() {
-            styles = "\n    .calendar__weeks_block-true{max-height:none;padding: 20px;}\n    ";
-            template = "\n    <div class=\"btn btn-primary calendar__weeks_edit-button\" (click)=\"onEditWeekDoings(weekDoingsEdit.show)\">{{weekDoingsEdit.text}}</div>\n    <div *ngFor=\"#week of data; #weekIdx = index\">\n        <div class=\"calendar__weeks_block calendar__weeks_block-{{editWeeksInner}}\">\n            <div *ngIf=\"!weekDoingsEdit.show\">\n                <p *ngFor=\"#doing of week.doings\">\n                    <label class=\"calendar__routine_label\">{{doing.description}}</label><input type=\"checkbox\" [(ngModel)]=\"doing.done\" />\n                </p>\n            </div>\n            <div *ngIf=\"weekDoingsEdit.show\">\n                <div *ngFor=\"#doing of week.doings; #i = index\" class=\"calendar__current_line\">\n                    <input class=\"calendar__current_doing\" [(ngModel)]=\"doing.description\" />\n                    <span>Important?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.important\" />\n                    <span>Urgent?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.urgent\" />\n                    <input type=\"number\" class=\"calendar__current_plantime\" value=\"{{doing.planTime}}\" />\n                    <div (click)=\"onDoingDelete(week, i)\" *ngIf=\"week.doings.length > 1\" class=\"btn btn-danger calendar__current_delete\">X</div>\n                </div>\n                <div (click)=\"onWeekDoingAdd(week)\" class=\"btn btn-success calendar__current_add-doing\">Add Week Doing</div>\n            </div>\n        </div>\n    </div>";
+            styles = "\n    .calendar__weeks_block-true{max-height:none;}\n    ";
+            template = "\n    <div [attr.weeksMarker]=\"data[0] ? data[0].month : 0\" class=\"btn btn-primary calendar__weeks_edit-button\" (click)=\"onEditWeekDoings(weekDoingsEdit.show)\">{{weekDoingsEdit.text}}</div>\n    <div *ngFor=\"#week of data; #weekIdx = index\">\n        <div class=\"calendar__weeks_block-{{weekDoingsEdit.show}}\">\n            <div class=\"calendar__weeks_block\" *ngIf=\"weekDoingsEdit.show && week.doings.length > 0\">\n                <p *ngFor=\"#doing of week.doings\">\n                    <label class=\"calendar__routine_label\">{{doing.description}}</label>\n                    <input class=\"calendar__routine_input\" type=\"checkbox\" [(ngModel)]=\"doing.done\" />\n                </p>\n            </div>\n            <div class=\"calendar__weeks_block\" *ngIf=\"!weekDoingsEdit.show\">\n                <div *ngFor=\"#doing of week.doings; #i = index\" class=\"calendar__current_line\">\n                    <input class=\"calendar__current_doing\" [(ngModel)]=\"doing.description\" />\n                    <span>Important?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.important\" />\n                    <span>Urgent?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.urgent\" />\n                    <input type=\"number\" class=\"calendar__current_plantime\" value=\"{{doing.planTime}}\" />\n                    <div (click)=\"onDoingDelete(week, i)\" *ngIf=\"week.doings.length > 1\" class=\"btn btn-danger calendar__current_delete\">X</div>\n                </div>\n                <div (click)=\"onWeekDoingAdd(week)\" class=\"btn btn-success calendar__current_add-doing\">Add Week Doing</div>\n            </div>\n        </div>\n    </div>";
             calendarWeeksComponent = (function () {
-                function calendarWeeksComponent(_daysService) {
+                function calendarWeeksComponent(_daysService, elementRef) {
                     this._daysService = _daysService;
+                    this.elementRef = elementRef;
                     this.weeks = days_service_1.WEEK;
-                    this.editWeeksInner = false;
                     this.editWeeks = new core_1.EventEmitter();
                     this.weekDoingsEdit = {
                         text: 'Add week\'s doings',
-                        show: false
+                        show: true
                     };
+                    var container = this.elementRef.nativeElement;
                 }
                 calendarWeeksComponent.prototype.onDoingDelete = function (week, i) {
                     week.doings.splice(i, 1);
-                    this._daysService.updateWeeks(this.data);
+                    this._daysService.updateWeeks();
                 };
                 calendarWeeksComponent.prototype.onWeekDoingAdd = function (week, doing) {
-                    week.doings.push({ description: '', important: false, urgent: false, target: '', time: 0 });
-                    this._daysService.updateWeeks(this.data);
+                    week.doings.push({ month: 0,
+                        description: '',
+                        important: false,
+                        global: 0,
+                        urgent: false,
+                        main: false,
+                        target: '',
+                        time: 0 });
+                    this._daysService.updateWeeks();
                 };
                 calendarWeeksComponent.prototype.onEditWeekDoings = function (boo) {
+                    if (this.weekDoingsEdit.show) {
+                        this._daysService.updateWeeks();
+                    }
                     this.editWeeks.emit(boo);
-                    this.weekDoingsEdit.text = boo ? 'Add week\'s doings' : 'Back';
+                    this.weekDoingsEdit.text = !boo ? 'Add week\'s doings' : 'Back';
                     this.weekDoingsEdit.show = !this.weekDoingsEdit.show;
-                    this.editWeeksInner = !this.editWeeksInner;
                 };
                 __decorate([
                     core_1.Input(), 
@@ -62,7 +72,7 @@ System.register(['angular2/core', '../../../services/days/days.service'], functi
                         template: template,
                         styles: [styles]
                     }), 
-                    __metadata('design:paramtypes', [days_service_1.DaysService])
+                    __metadata('design:paramtypes', [days_service_1.DaysService, core_1.ElementRef])
                 ], calendarWeeksComponent);
                 return calendarWeeksComponent;
             }());

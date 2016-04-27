@@ -30,6 +30,7 @@ import {IShortTarget} from '../../../services/app-types'
                         <td rowspan="2" class="lifetarget__short_table-header-td">Quantity of doings</td>
                         <td colspan="3">Deadline</td>
                         <td rowspan="2" class="lifetarget__short_table-header-td">Why you need it?</td>
+                        <td rowspan="2"></td>
                     </tr>
                     <tr>
                         <td>Month</td>
@@ -38,32 +39,26 @@ import {IShortTarget} from '../../../services/app-types'
                     </tr>
                 </thead>
                 <tbody *ngIf="data.shortTargets[0].target">
-                    <tr *ngFor="#shortTarget of data.shortTargets">
+                    <tr *ngFor="#shortTarget of data.shortTargets; #i = index">
                         <td>{{shortTarget.target}}</td>
                         <td>{{shortTarget.doings.length}}</td>
                         <td class="ta-center">{{shortTarget.deadline.month}}</td>
                         <td class="ta-center">{{shortTarget.deadline.number}}</td>
                         <td class="ta-center">{{shortTarget.deadline.year}}</td>
                         <td>{{shortTarget.why}}</td>
+                        <td><div (click)="onTargetDelete(i)" class="btn btn-danger calendar__current_delete">X</div></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     `
 })
-/*
-            */
 export class shortTargetComponent{
-    //shortTargets: IShortTarget[] = [{target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''}]
     selectedShortTargets: IShortTarget = {target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''};
     @Output() backToLongTargets = new EventEmitter<boolean>();
     @Output() saveShortTargets = new EventEmitter<boolean>();
-    @Input() data/*: ILongTarget*/;
-    constructor(){
-    }
-    
-    ngOnInit(){
-    }
+    @Input() data;
+    constructor(){}
     
     onBackToLongTargets(){
         this.backToLongTargets.emit(false);
@@ -73,5 +68,11 @@ export class shortTargetComponent{
         if(!this.data.shortTargets[0].target) this.data.shortTargets[0] = short; else this.data.shortTargets.push(short);
         this.selectedShortTargets = {target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''};
         this.saveShortTargets.emit(true);
-    }    
+    }
+    
+    onTargetDelete(i){
+        this.data.shortTargets.splice(i,1);
+        this.saveShortTargets.emit(true);
+    }
+        
 }

@@ -1,7 +1,7 @@
 import {Injectable} from 'angular2/core'
 import {ILifeTarget} from '../app-types'
 
-export const LIFETARGET: ILifeTarget = {target:'',globalTargets:[{target:'',role:'',longTargets:[{target:'',shortTargets:[{target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''}]}]}]};
+export const LIFETARGET: ILifeTarget = {target:'',globalTargets:[{target:'',time:0,role:'',longTargets:[{target:'',shortTargets:[{target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''}]}]}]};
 
 
 @Injectable()

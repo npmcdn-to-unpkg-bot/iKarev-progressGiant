@@ -27,14 +27,16 @@ import {shortTargetComponent} from './src/lifetarget-shorttargets.component'
                     ngControl="globalTargetControl"
                     [(ngModel)]="globalTarget.target"
                 />
-                <span class="btn btn-primary" *ngIf="lifeTarget.globalTargets.length == i+1" (click)="onGlobalTargetAdd()">Add global target</span>
+                <div (click)="onTargetDelete(i)" class="btn btn-danger calendar__current_delete">X</div>
+                <span class="btn btn-primary" *ngIf="lifeTarget.globalTargets.length == i+1" (click)="onGlobalTargetAdd()">+</span>
             </div>
-            <div (click)="onGlobalTargetsFinish()" class="btn btn-success calendar__current_add-doing">Finish planning global targets</div>
+            <div class="btn btn-default" (click)="lifeTargetIsSet = false">Back</div>
+            <div (click)="onGlobalTargetsFinish()" class="btn btn-success calendar__current_add-doing">Next</div>
         </form>
         
         <form *ngIf="lifeTargetIsSet && globalTargetsIsSet && !longTargetsIsSet" #longTargetsForm="ngForm" class="col-xs-5 lifetarget__longtargets">
             <label class="lifetarget__longtargets_label">For the each of global targets, you need to enter targets of long (3-5 years) targets.</label>
-            <div class="lifetarget__longtargets_block" *ngFor="#globalTarget of lifeTarget.globalTargets; #i = index">
+            <div class="lifetarget__longtargets_block" *ngFor="#globalTarget of lifeTarget.globalTargets; #iglob = index">
                 <div class="w-100 btn btn-info">{{globalTarget.target}}</div>
                 <div *ngFor="#longTarget of globalTarget.longTargets; #i = index">
                     <input
@@ -43,10 +45,12 @@ import {shortTargetComponent} from './src/lifetarget-shorttargets.component'
                         ngControl="longTargetControl"
                         [(ngModel)]="longTarget.target"
                     />
+                    <div (click)="onTargetDelete(iglob, i)" class="btn btn-danger calendar__current_delete">X</div>
                     <p class="lifetarget__longtargets_add btn btn-primary" *ngIf="globalTarget.longTargets.length == i+1" (click)="onLongTargetAdd(globalTarget, longTarget)">+</p>
                 </div>
             </div>
             <div class="fleft w-100">
+                <div class="btn btn-default" (click)="globalTargetsIsSet = false">Back to edit global targets</div>
                 <div (click)="onLongTargetsFinish()" class="btn btn-success calendar__current_add-doing">Finish planning long targets</div>
             </div>
         </form>
@@ -58,8 +62,8 @@ import {shortTargetComponent} from './src/lifetarget-shorttargets.component'
                     <p class="lifetarget__longtargets_block-list-item" (click)="onLongTargetSelect(longTarget)">{{longTarget.target}}</p>
                 </div>
             </div>
+            <div class="btn btn-default" (click)="longTargetsIsSet = false">Back to edit long targets</div>
         </div>
-        
         <short-targets (saveShortTargets)="onSaveShortTargets(boo)" *ngIf="showLong" (backToLongTargets)="onBackToLongTargets()" [data]="selectedLongTarget"></short-targets>
         
     </div>
@@ -81,7 +85,6 @@ export class LifetargetComponent {
     selectedLongTarget: ILongTarget = {target:'',shortTargets:[{target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''}]}
     constructor(private _lifetargetService: LifetargetService){
         this.lifeTarget = _lifetargetService.getTargets();
-        console.log(this.lifeTarget);
     }
     
     ngOnInit(){
@@ -89,7 +92,12 @@ export class LifetargetComponent {
         this.globalTargetsIsSet = this.lifeTarget.globalTargets[0].target ? true : false;
         this.longTargetsIsSet = this.lifeTarget.globalTargets[0].longTargets[0].target ? true : false;  
     }
-        
+    
+    onTargetDelete(global, long){
+        if(long) this.lifeTarget.globalTargets[global].longTargets.splice(long,1)
+        else this.lifeTarget.globalTargets.splice(global,1);
+    }
+    
     onLifeTargetAdd(){
         this.lifeTargetIsSet = true;
         this.text = 'Cool! Now you have to divide the life target to several global targets';
@@ -97,7 +105,7 @@ export class LifetargetComponent {
     }
     
     onGlobalTargetAdd(){
-        this.lifeTarget.globalTargets.push({target:'',role:'',longTargets:[{target:'',shortTargets:[{target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''}]}]});
+        this.lifeTarget.globalTargets.push({target:'',time:0,role:'',longTargets:[{target:'',shortTargets:[{target:'',deadline: {year:0,month:0,weekday:0,number:0}, doings: [],why: ''}]}]});
     }
     
     onLongTargetAdd(global, long){

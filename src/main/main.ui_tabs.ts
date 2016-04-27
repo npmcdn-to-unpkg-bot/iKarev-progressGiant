@@ -45,7 +45,4 @@ export class UiTabs {
   select(pane: UiPane) {
     this.panes.toArray().forEach((p: UiPane) => p.active = p == pane);
   }
-  onChangeView(e){
-      console.log(e);
-  }
 }

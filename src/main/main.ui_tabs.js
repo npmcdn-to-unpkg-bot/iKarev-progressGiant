@@ -70,9 +70,6 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 UiTabs.prototype.select = function (pane) {
                     this.panes.toArray().forEach(function (p) { return p.active = p == pane; });
                 };
-                UiTabs.prototype.onChangeView = function (e) {
-                    console.log(e);
-                };
                 __decorate([
                     core_1.ContentChildren(UiPane), 
                     __metadata('design:type', core_1.QueryList)

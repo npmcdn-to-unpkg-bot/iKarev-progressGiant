@@ -125,23 +125,24 @@
             padding:5px 10px;
             &_label{
                 display: inline-block;
-                padding: 6px 14px;
+                padding: 6px 0;
+                text-align: center;
+                width: 35px;
                 border: 1px solid silver;
             }
             &_urgent{
-                &-false{
-                    background-color: rgb(55,200,130);
-                }
                 &-true{
-                    background-color: rgb(170,55,150);
+                    background-color: rgb(55,200,130);
                 }
             }
             &_important{
-                &-false{
+                &-true{
                     background-color: rgb(55,130,200);
                 }
+            }
+            &_main{
                 &-true{
-                    background-color: rgb(200,50,50);
+                    background-color: rgb(255,130,255);
                 }
             }
         }
@@ -157,17 +158,13 @@
     &__month{
         float: left;
         width: 100%;
-        max-height: 200px;
-        border: 1px solid silver;
-        overflow-y: scroll;
-        overflow-x: hidden;
         &_weekdays{
             &-each{
                 width: 10%;
                 margin: 10px 2.1%;
             }
         }
-        &-false{
+        &-true{
             max-height: none;
         }
         &_block{
@@ -186,9 +183,41 @@
             }
         }
     }
+    &__monthes{
+        min-height: 69px;
+        position: relative;
+        &_item{
+            width: 14%;
+            margin: 5px 1%;
+            border: 1px solid #286090;
+            float: left;
+            padding: 5px 10px;
+            text-align: center;
+            border-radius: 3px;
+            cursor: pointer;
+            &:hover{
+                background: #dfdfdf;
+            }
+        }
+        &_add{
+            position: absolute;
+            bottom: 5px;
+            right:5px;
+            border-radius: 50%;
+            font: 500 30px/36px Arial;
+            width: 35px;
+            height: 35px;
+            padding: 0;
+        }
+    }
     &__routine{
         &_label{
-            width: 150px;
+            width: calc(100% - 20px);
+            vertical-align: middle;
+        }
+        &_input{
+            vertical-align: middle;
+            width:13px;
         }
     }
     &__weeks{
@@ -198,8 +227,6 @@
             width: 100%;
             overflow-y: scroll;
             margin: 10px 0 16px;
-            max-height: 84px;
-            min-height: 84px;
             border-radius: 2px;
             &-edit{
                 max-height: none;
@@ -390,18 +417,7 @@
 .month-select{
     & .calendar__current{
         &_form{
-            &-label{
-            }
             &-select{
-                &-global{
-                    &-content{
-                        margin: -40px -162px;
-                    }
-                    &-button{
-                        &:hover{
-                        }
-                    }
-                }
                 &-long{
                     &-content{
                         margin: -41px -150px;
@@ -409,17 +425,11 @@
                         background: #fff;
                         border: 1px solid silver;
                     }
-                    &-button{
-                        &:hover{
-                        }
-                    }
                 }
                 &-short{
                     &-button{
                         text-align: right;
                         width: 100%;
-                        &:hover{
-                        }
                     }
                 }
             }
@@ -434,6 +444,21 @@ current-day{
     width:100%;
     float:left;
 }
+
+.day{
+    &__edited{
+        &_close{
+            transform: rotate(45deg);
+            font: 900 18px/0px Calibri;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            top:20px;
+            right:20px;
+        }
+    }
+}
+
 .noborder{
     border:0px;
 }

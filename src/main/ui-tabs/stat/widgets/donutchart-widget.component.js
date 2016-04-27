@@ -52,18 +52,18 @@ System.register(["angular2/core", "./highcharts-widget.component"], function(exp
                     data: []
                 };
                 for (var g = 0; g < data.length; g++) {
-                    var global = data[g];
-                    var time = 0;
-                    for (var l = 0; l < global.longTargets.length; l++) {
+                    //var global = data[g];
+                    //var time = 0;
+                    /*for(var l = 0; l < global.longTargets.length; l++){
                         var long = global.longTargets[l];
-                        for (var s = 0; s < long.shortTargets.length; s++) {
+                        for(var s = 0; s < long.shortTargets.length; s++){
                             var short = long.shortTargets[s];
-                            for (var d = 0; d < short.doings.length; d++) {
+                            for(var d = 0; d < short.doings.length; d++){
                                 time += short.doings[d].time ? short.doings[d].time : 0;
                             }
                         }
-                    }
-                    mergedData.data.push([global.target, time]);
+                    }*/
+                    mergedData.data.push([data[g].target, data[g].time]);
                 }
                 return {
                     series: [{
@@ -77,9 +77,7 @@ System.register(["angular2/core", "./highcharts-widget.component"], function(exp
                 }
                 DonutchartWidgetComponent.prototype.ngOnInit = function () {
                     this.htData = HIGHCHARTS_GAUGE_OPTIONS;
-                    console.log(this.data);
                     this.htData = Highcharts.merge(HIGHCHARTS_GAUGE_OPTIONS, globalTargetsMap(this.data));
-                    console.log(this.htData);
                 };
                 __decorate([
                     core_1.Input(), 

@@ -28,15 +28,15 @@ const template = `
     </div>`
     
 @Component({
-    selector:'month',
+    selector:'month-doings',
     template:template,
     providers:[DaysService, LifetargetService],
     directives:[calendarTargetComponent]
 })
-export class calendarMonthComponent{
+export class calendarMonthDoingsComponent{
     selectTargetIsActive: boolean = false;
     lifeTarget: ILifeTarget;
-    month: IMonth = MONTH;
+    month: IMonth[] = MONTH;
     globalIndex: number;
     longIndex: number;
     shortIndex: number;
@@ -55,7 +55,6 @@ export class calendarMonthComponent{
     }
     
     onEditMonthDoings(boo){
-        console.log(this.data);
         this.monthDoingsEdit.text = boo ? 'Add doings' : 'Back'
         this.monthDoingsEdit.show = !this.monthDoingsEdit.show;
     }
@@ -67,9 +66,11 @@ export class calendarMonthComponent{
     
     onMonthDoingAdd(doing){
         this.data.push({description:'',important:false,urgent:false,target:'',time:0});
-        this.lifeTarget.globalTargets[this.globalIndex].longTargets[this.longIndex].shortTargets[this.shortIndex].doings.push(doing);
-        this._daysService.updateMonthDoings(this.data);
-        this._lifetargetService.updateLifeTarget(this.lifeTarget);
+        if(doing){
+            this.lifeTarget.globalTargets[this.globalIndex].longTargets[this.longIndex].shortTargets[this.shortIndex].doings.push(doing);
+            this._daysService.updateMonthDoings(this.data);
+            this._lifetargetService.updateLifeTarget(this.lifeTarget);
+        }
     }   
     
     onSelectShortTarget(doing, obj){

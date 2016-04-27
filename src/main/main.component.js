@@ -49,7 +49,6 @@ System.register(['angular2/core', './main.ui_tabs', './ui-tabs/calendar/calendar
                     this.event = event;
                 };
                 mainComponent.prototype.onPositionChanged = function (e) {
-                    console.log(e);
                 };
                 mainComponent = __decorate([
                     core_1.Component({

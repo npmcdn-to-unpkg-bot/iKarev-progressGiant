@@ -12,10 +12,12 @@ export interface IDayRoutine{
 }
 
 export interface IWeek{
+    month:number;
     doings:IDoing[]
 }
 
 export interface IMonth{
+    index: number;
     days:IDay[];
     weeks:IWeek[];
     doings:IDoing[];
@@ -27,10 +29,12 @@ export interface ISaveDay {
 }
 
 export interface IDoing{
+    month:number;
     description:string,
     important: boolean,
     global: number;
     urgent: boolean,
+    main: boolean,
     target: string,
     time:number;
 };
@@ -72,6 +76,7 @@ export interface ILifeTarget{
 export interface IGlobalTarget{
     target:string,
     role: string,
+    time:number,
     longTargets: ILongTarget[]
 };
 

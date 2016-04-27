@@ -36,9 +36,10 @@ const globalTargetsMap = function(data){
         data:[]
     }
     for(var g = 0; g < data.length; g++){
-        var global = data[g];
-        var time = 0;
-        for(var l = 0; l < global.longTargets.length; l++){
+        //var global = data[g];
+        //var time = 0;
+        
+        /*for(var l = 0; l < global.longTargets.length; l++){
             var long = global.longTargets[l];
             for(var s = 0; s < long.shortTargets.length; s++){
                 var short = long.shortTargets[s];
@@ -46,8 +47,8 @@ const globalTargetsMap = function(data){
                     time += short.doings[d].time ? short.doings[d].time : 0;
                 }
             }
-        }
-        mergedData.data.push([global.target,time]);
+        }*/
+        mergedData.data.push([data[g].target,data[g].time]);
     }
     return {
         series: [{
@@ -68,8 +69,6 @@ export class DonutchartWidgetComponent {
     private htData;
     ngOnInit(){
         this.htData = HIGHCHARTS_GAUGE_OPTIONS;
-        console.log(this.data);
         this.htData = (<any>Highcharts).merge(HIGHCHARTS_GAUGE_OPTIONS, globalTargetsMap(this.data));
-        console.log(this.htData);
     }
 }
