@@ -29,12 +29,6 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                     this.idealRoutine = IDEAL_ROUTINE;
                 }
                 DaysService.prototype.getMonth = function () {
-                    if (window.localStorage["doings"] != undefined && window.localStorage["doings"]) {
-                        this.month[0].doings = JSON.parse(window.localStorage["doings"]);
-                    }
-                    else {
-                        this.month[0].doings = [{ month: this.month[0].index, description: '', important: true, urgent: true, main: false, target: '', global: 0, time: 0 }];
-                    }
                     if (window.localStorage["days"] != undefined && window.localStorage["days"]) {
                         var days = JSON.parse(window.localStorage["days"]);
                         var n = days[0].date.month;
@@ -74,6 +68,18 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                         for (var i = 0; i < daysQty; i++) {
                             this.month[0].days[i] = { index: i, date: { year: 2016, month: newMonth, number: i + 1, weekday: (i + 1) % 7 }, doings: [], done: false, routine: [{ doing: '', time: 0 }] };
                         }
+                    }
+                    if (window.localStorage["doings"] != undefined && window.localStorage["doings"]) {
+                        var doings = JSON.parse(window.localStorage["doings"]);
+                        console.log(doings);
+                        if (this.month[doings[0].month].doings.length == 0) {
+                            for (var d in doings) {
+                                this.month[doings[d].month].doings.push(doings[d]);
+                            }
+                        }
+                    }
+                    else {
+                        this.month[0].doings = [{ month: this.month[0].index, description: '', important: true, urgent: true, main: false, target: '', global: 0, time: 0 }];
                     }
                     if (window.localStorage["weeks"] != undefined && window.localStorage["weeks"]) {
                         var weeks = JSON.parse(window.localStorage["weeks"]);
@@ -130,9 +136,15 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                         return val;
                     });
                 };
-                DaysService.prototype.updateMonthDoings = function (doings) {
-                    this.month[0].doings = doings;
-                    window.localStorage["doings"] = JSON.stringify(this.month[0].doings, function (key, val) {
+                DaysService.prototype.updateMonthDoings = function () {
+                    console.log(this.month);
+                    var doingsArray = [];
+                    for (var m in this.month) {
+                        for (var d in this.month[m].doings) {
+                            doingsArray.push(this.month[m].doings[d]);
+                        }
+                    }
+                    window.localStorage["doings"] = JSON.stringify(doingsArray, function (key, val) {
                         if (key == '$$hashKey') {
                             return undefined;
                         }

@@ -9,7 +9,7 @@ const WEEK = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Satar
 const template = `
     <div class="calendar__month calendar__month-{{editWeeksBoo}}">
         <h2>{{monthName}} 2016</h2>
-        <month-doings class="col-xs-6 calendar__month_block" [data]="monthDoings"></month-doings>
+        <month-doings (monthDoingDelete)="onMonthDoingDelete($event)" (editMonthDoings)="onEditMonthDoings($event)" class="col-xs-6 calendar__month_block" [data]="monthDoings"></month-doings>
         <div *ngIf="!editWeeksBoo">
             <div class="calendar__month_weekdays col-xs-9">
                 <div class="btn calendar__month_weekdays-each" *ngFor="#day of weekDays">{{day}}</div>
@@ -40,9 +40,19 @@ export class CalendarMonthDaysComponent{
     @Output() editDay = new EventEmitter<any>()
     @Output() selectDay = new EventEmitter<any>()
     
-    constructor(){}
+    constructor(private _daysService: DaysService){
+        
+    }
+    
+    ngOnInit(){
+    }
     
     ngOnChanges(){
+        if(this.monthDoings.length > 0){
+            this.monthDoings = this.data.doings;
+        }else{
+            this.monthDoings[0] = {month:this.data.index,description:'',important:true,urgent:true,main:false,target:'',global:0,time:0};
+        }
         switch(this.data.days[0].date.month){
             case 0:this.monthName = 'January';break;
             case 1:this.monthName = 'February';break;
@@ -57,6 +67,16 @@ export class CalendarMonthDaysComponent{
             case 10:this.monthName = 'November';break;
             case 11:this.monthName = 'December';break;
         }
+    }
+    
+    onEditMonthDoings(doings){
+        this.data.doings = doings;
+        this._daysService.updateMonthDoings();
+    }
+    
+    onMonthDoingDelete(doings){
+        this.data.doings = doings;
+        this._daysService.updateMonthDoings();
     }
     
     onEditWeeks(boo){

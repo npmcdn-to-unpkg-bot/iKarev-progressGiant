@@ -79,10 +79,12 @@ System.register(['angular2/core', '../../services/days/days.service', './src/cal
                         days[i] = { index: i, date: { year: 2016, month: newMonth, number: i + 1, weekday: (i + 1) % 7 }, doings: [], done: false, routine: [{ doing: '', time: 0 }] };
                     for (var i = 0; i < 5; i++)
                         weeks[i] = { month: this.month.length, doings: [{ description: '', month: newMonth, important: true, urgent: true, main: false, global: 0, target: '', time: 0 }] };
-                    doings = [{ month: this.month[this.month.length - 1].index, description: '', important: true, urgent: true, main: false, target: '', global: 0, time: 0 }];
+                    doings = [{ month: this.month[this.month.length - 1].index + 1, description: '', important: true, urgent: true, main: false, target: '', global: 0, time: 0 }];
+                    console.log(newMonth);
                     this.month.push({ index: newMonth, days: days, weeks: weeks, doings: doings });
                     this._daysService.updateDay();
                     this._daysService.updateWeeks();
+                    this._daysService.updateMonthDoings();
                 };
                 CalendarComponent.prototype.onCloseDay = function () {
                     this.isShowShedule = false;
@@ -92,6 +94,7 @@ System.register(['angular2/core', '../../services/days/days.service', './src/cal
                     this.selectDayShedule = this.days[e.index];
                 };
                 CalendarComponent.prototype.onDoingDelete = function (i) {
+                    console.log(this.month[0].doings);
                     this.month[0].doings.splice(i, 1);
                     this._daysService.updateDay();
                 };

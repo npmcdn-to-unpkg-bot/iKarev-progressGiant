@@ -1,5 +1,5 @@
 import {Component, Input, Output, EventEmitter} from 'angular2/core';
-import {ILifeTarget, IShortTarget, IMonth} from '../../../services/app-types'
+import {ILifeTarget, IShortTarget, IMonth, IDoing} from '../../../services/app-types'
 import {DaysService, MONTH} from '../../../services/days/days.service';
 import {calendarTargetComponent} from './calendar-target.component';
 import {LifetargetService} from '../../../services/targets/targets.service';
@@ -23,8 +23,8 @@ const template = `
                     />
             <select-target class="calendar__current_form-select month-select" *ngIf="selectTargetIsActive" [data]="lifeTarget" (selectedTarget)="onSelectShortTarget(doing, $event)"></select-target>
             <div (click)="onDoingDelete(i)" *ngIf="data.length > 1" class="btn btn-danger calendar__current_delete">X</div>
+            <div *ngIf="i+1 == data.length && doing.target" (click)="onMonthDoingAdd(doing)" class="btn btn-success calendar__current_add-doing">+</div>
         </div>
-        <div (click)="onMonthDoingAdd(doing)" class="btn btn-success calendar__current_add-doing">Add Month Doing</div>
     </div>`
     
 @Component({
@@ -42,6 +42,8 @@ export class calendarMonthDoingsComponent{
     shortIndex: number;
     @Input() data;
     @Output() selectedTarget = new EventEmitter<IShortTarget>();
+    @Output() editMonthDoings = new EventEmitter<IDoing[]>();
+    @Output() monthDoingDelete = new EventEmitter<IShortTarget>();
     constructor(private _daysService: DaysService, private _lifetargetService: LifetargetService){
         //this.month = this.data;
     }
@@ -51,6 +53,7 @@ export class calendarMonthDoingsComponent{
     }
     
     ngOnInit(){
+        console.log(this.data);
         this.lifeTarget = this._lifetargetService.getTargets();
     }
     
@@ -61,15 +64,17 @@ export class calendarMonthDoingsComponent{
     
     onDoingDelete(i){
         this.data.splice(i,1);
-        this._daysService.updateMonthDoings(this.data);
+        this.monthDoingDelete.emit(this.data)
     }
     
-    onMonthDoingAdd(doing){
-        this.data.push({description:'',important:false,urgent:false,target:'',time:0});
+    onMonthDoingAdd(doing: IDoing){
+        this.data.push({month:this.data[0].month,global:this.globalIndex,description:'',important:false,urgent:false,target:'',time:0,main:false});
+        console.log(doing);
         if(doing){
             this.lifeTarget.globalTargets[this.globalIndex].longTargets[this.longIndex].shortTargets[this.shortIndex].doings.push(doing);
-            this._daysService.updateMonthDoings(this.data);
+            //this._daysService.updateMonthDoings(this.data);
             this._lifetargetService.updateLifeTarget(this.lifeTarget);
+            this.editMonthDoings.emit(this.data)
         }
     }   
     

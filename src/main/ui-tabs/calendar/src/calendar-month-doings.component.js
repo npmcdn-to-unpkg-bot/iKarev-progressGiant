@@ -27,7 +27,7 @@ System.register(['angular2/core', '../../../services/days/days.service', './cale
                 targets_service_1 = targets_service_1_1;
             }],
         execute: function() {
-            template = "\n    <h2>Month's doings:</h2><button class=\"btn calendar__month_edit p-abs btn-primary\" (click)=\"onEditMonthDoings(monthDoingsEdit.show)\">{{monthDoingsEdit.text}}</button>\n    <hr />\n    <div *ngIf=\"!monthDoingsEdit.show\">\n        <p *ngFor=\"#doing of data\"><label class=\"calendar__routine_label\">{{doing.description}}</label><input type=\"checkbox\" [(ngModel)]=\"doing.done\" /></p>\n    </div>\n    <div *ngIf=\"monthDoingsEdit.show\">\n        <h4>Add below new doings you have to do this month</h4>\n        <div *ngFor=\"#doing of data; #i = index\" class=\"calendar__current_line\">\n            <input class=\"calendar__current_doing\" [(ngModel)]=\"doing.description\" />\n            <span>Important?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.important\" />\n            <span>Urgent?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.urgent\" />\n            <input id=\"newdoing-target\" \n                        [(ngModel)]=\"doing.target\" \n                        *ngIf=\"!selectTargetIsActive\"\n                        (focus)=\"selectTargetIsActive = true\"\n                    />\n            <select-target class=\"calendar__current_form-select month-select\" *ngIf=\"selectTargetIsActive\" [data]=\"lifeTarget\" (selectedTarget)=\"onSelectShortTarget(doing, $event)\"></select-target>\n            <div (click)=\"onDoingDelete(i)\" *ngIf=\"data.length > 1\" class=\"btn btn-danger calendar__current_delete\">X</div>\n        </div>\n        <div (click)=\"onMonthDoingAdd(doing)\" class=\"btn btn-success calendar__current_add-doing\">Add Month Doing</div>\n    </div>";
+            template = "\n    <h2>Month's doings:</h2><button class=\"btn calendar__month_edit p-abs btn-primary\" (click)=\"onEditMonthDoings(monthDoingsEdit.show)\">{{monthDoingsEdit.text}}</button>\n    <hr />\n    <div *ngIf=\"!monthDoingsEdit.show\">\n        <p *ngFor=\"#doing of data\"><label class=\"calendar__routine_label\">{{doing.description}}</label><input type=\"checkbox\" [(ngModel)]=\"doing.done\" /></p>\n    </div>\n    <div *ngIf=\"monthDoingsEdit.show\">\n        <h4>Add below new doings you have to do this month</h4>\n        <div *ngFor=\"#doing of data; #i = index\" class=\"calendar__current_line\">\n            <input class=\"calendar__current_doing\" [(ngModel)]=\"doing.description\" />\n            <span>Important?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.important\" />\n            <span>Urgent?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.urgent\" />\n            <input id=\"newdoing-target\" \n                        [(ngModel)]=\"doing.target\" \n                        *ngIf=\"!selectTargetIsActive\"\n                        (focus)=\"selectTargetIsActive = true\"\n                    />\n            <select-target class=\"calendar__current_form-select month-select\" *ngIf=\"selectTargetIsActive\" [data]=\"lifeTarget\" (selectedTarget)=\"onSelectShortTarget(doing, $event)\"></select-target>\n            <div (click)=\"onDoingDelete(i)\" *ngIf=\"data.length > 1\" class=\"btn btn-danger calendar__current_delete\">X</div>\n            <div *ngIf=\"i+1 == data.length && doing.target\" (click)=\"onMonthDoingAdd(doing)\" class=\"btn btn-success calendar__current_add-doing\">+</div>\n        </div>\n    </div>";
             calendarMonthDoingsComponent = (function () {
                 function calendarMonthDoingsComponent(_daysService, _lifetargetService) {
                     this._daysService = _daysService;
@@ -35,6 +35,8 @@ System.register(['angular2/core', '../../../services/days/days.service', './cale
                     this.selectTargetIsActive = false;
                     this.month = days_service_1.MONTH;
                     this.selectedTarget = new core_1.EventEmitter();
+                    this.editMonthDoings = new core_1.EventEmitter();
+                    this.monthDoingDelete = new core_1.EventEmitter();
                     this.monthDoingsEdit = {
                         text: 'Add doings',
                         show: false
@@ -42,6 +44,7 @@ System.register(['angular2/core', '../../../services/days/days.service', './cale
                     //this.month = this.data;
                 }
                 calendarMonthDoingsComponent.prototype.ngOnInit = function () {
+                    console.log(this.data);
                     this.lifeTarget = this._lifetargetService.getTargets();
                 };
                 calendarMonthDoingsComponent.prototype.onEditMonthDoings = function (boo) {
@@ -50,14 +53,16 @@ System.register(['angular2/core', '../../../services/days/days.service', './cale
                 };
                 calendarMonthDoingsComponent.prototype.onDoingDelete = function (i) {
                     this.data.splice(i, 1);
-                    this._daysService.updateMonthDoings(this.data);
+                    this.monthDoingDelete.emit(this.data);
                 };
                 calendarMonthDoingsComponent.prototype.onMonthDoingAdd = function (doing) {
-                    this.data.push({ description: '', important: false, urgent: false, target: '', time: 0 });
+                    this.data.push({ month: this.data[0].month, global: this.globalIndex, description: '', important: false, urgent: false, target: '', time: 0, main: false });
+                    console.log(doing);
                     if (doing) {
                         this.lifeTarget.globalTargets[this.globalIndex].longTargets[this.longIndex].shortTargets[this.shortIndex].doings.push(doing);
-                        this._daysService.updateMonthDoings(this.data);
+                        //this._daysService.updateMonthDoings(this.data);
                         this._lifetargetService.updateLifeTarget(this.lifeTarget);
+                        this.editMonthDoings.emit(this.data);
                     }
                 };
                 calendarMonthDoingsComponent.prototype.onSelectShortTarget = function (doing, obj) {
@@ -75,6 +80,14 @@ System.register(['angular2/core', '../../../services/days/days.service', './cale
                     core_1.Output(), 
                     __metadata('design:type', Object)
                 ], calendarMonthDoingsComponent.prototype, "selectedTarget", void 0);
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], calendarMonthDoingsComponent.prototype, "editMonthDoings", void 0);
+                __decorate([
+                    core_1.Output(), 
+                    __metadata('design:type', Object)
+                ], calendarMonthDoingsComponent.prototype, "monthDoingDelete", void 0);
                 calendarMonthDoingsComponent = __decorate([
                     core_1.Component({
                         selector: 'month-doings',

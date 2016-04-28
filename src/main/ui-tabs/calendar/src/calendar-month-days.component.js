@@ -28,16 +28,25 @@ System.register(['angular2/core', '../../../services/days/days.service', './cale
             }],
         execute: function() {
             WEEK = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Satarday'];
-            template = "\n    <div class=\"calendar__month calendar__month-{{editWeeksBoo}}\">\n        <h2>{{monthName}} 2016</h2>\n        <month-doings class=\"col-xs-6 calendar__month_block\" [data]=\"monthDoings\"></month-doings>\n        <div *ngIf=\"!editWeeksBoo\">\n            <div class=\"calendar__month_weekdays col-xs-9\">\n                <div class=\"btn calendar__month_weekdays-each\" *ngFor=\"#day of weekDays\">{{day}}</div>\n            </div>\n            <div class=\"col-xs-3 calendar__month_week left-silver\"><div class=\"calendar__month_week-inner btn btn-default\">Weeks</div></div>\n        </div>\n        <div class=\"col-xs-9 calendar__month_days\" *ngIf=\"!editWeeksBoo\">\n            <div class=\"calendar__cell\" *ngFor=\"#day of data.days\">\n                <p class=\"calendar__cell_date\">{{day.date.number < 10 ? 0 : ''}}{{day.date.number}}</p>\n                <p (click)=\"onEditDay(day)\" class=\"calendar__cell_add\">Edit</p>\n                <p (click)=\"onSelectDay(day)\" class=\"calendar__cell_doings-qty\">{{day.doings.length}}</p>\n            </div>\n        </div>\n        <weeks (editWeeks)=\"onEditWeeks($event)\" class=\"col-xs-3 left-silver calendar__weeks\" [ngClass]=\"{calendar__weeks_edit: editWeeksBoo}\" [data]=\"data.weeks\"></weeks>\n    </div>";
+            template = "\n    <div class=\"calendar__month calendar__month-{{editWeeksBoo}}\">\n        <h2>{{monthName}} 2016</h2>\n        <month-doings (monthDoingDelete)=\"onMonthDoingDelete($event)\" (editMonthDoings)=\"onEditMonthDoings($event)\" class=\"col-xs-6 calendar__month_block\" [data]=\"monthDoings\"></month-doings>\n        <div *ngIf=\"!editWeeksBoo\">\n            <div class=\"calendar__month_weekdays col-xs-9\">\n                <div class=\"btn calendar__month_weekdays-each\" *ngFor=\"#day of weekDays\">{{day}}</div>\n            </div>\n            <div class=\"col-xs-3 calendar__month_week left-silver\"><div class=\"calendar__month_week-inner btn btn-default\">Weeks</div></div>\n        </div>\n        <div class=\"col-xs-9 calendar__month_days\" *ngIf=\"!editWeeksBoo\">\n            <div class=\"calendar__cell\" *ngFor=\"#day of data.days\">\n                <p class=\"calendar__cell_date\">{{day.date.number < 10 ? 0 : ''}}{{day.date.number}}</p>\n                <p (click)=\"onEditDay(day)\" class=\"calendar__cell_add\">Edit</p>\n                <p (click)=\"onSelectDay(day)\" class=\"calendar__cell_doings-qty\">{{day.doings.length}}</p>\n            </div>\n        </div>\n        <weeks (editWeeks)=\"onEditWeeks($event)\" class=\"col-xs-3 left-silver calendar__weeks\" [ngClass]=\"{calendar__weeks_edit: editWeeksBoo}\" [data]=\"data.weeks\"></weeks>\n    </div>";
             CalendarMonthDaysComponent = (function () {
-                function CalendarMonthDaysComponent() {
+                function CalendarMonthDaysComponent(_daysService) {
+                    this._daysService = _daysService;
                     this.monthDoings = [];
                     this.editWeeksBoo = false;
                     this.weekDays = WEEK;
                     this.editDay = new core_1.EventEmitter();
                     this.selectDay = new core_1.EventEmitter();
                 }
+                CalendarMonthDaysComponent.prototype.ngOnInit = function () {
+                };
                 CalendarMonthDaysComponent.prototype.ngOnChanges = function () {
+                    if (this.monthDoings.length > 0) {
+                        this.monthDoings = this.data.doings;
+                    }
+                    else {
+                        this.monthDoings[0] = { month: this.data.index, description: '', important: true, urgent: true, main: false, target: '', global: 0, time: 0 };
+                    }
                     switch (this.data.days[0].date.month) {
                         case 0:
                             this.monthName = 'January';
@@ -77,6 +86,14 @@ System.register(['angular2/core', '../../../services/days/days.service', './cale
                             break;
                     }
                 };
+                CalendarMonthDaysComponent.prototype.onEditMonthDoings = function (doings) {
+                    this.data.doings = doings;
+                    this._daysService.updateMonthDoings();
+                };
+                CalendarMonthDaysComponent.prototype.onMonthDoingDelete = function (doings) {
+                    this.data.doings = doings;
+                    this._daysService.updateMonthDoings();
+                };
                 CalendarMonthDaysComponent.prototype.onEditWeeks = function (boo) {
                     this.editWeeksBoo = boo;
                 };
@@ -105,7 +122,7 @@ System.register(['angular2/core', '../../../services/days/days.service', './cale
                         template: template,
                         directives: [calendar_weeks_component_1.calendarWeeksComponent, calendar_month_doings_component_1.calendarMonthDoingsComponent]
                     }), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [days_service_1.DaysService])
                 ], CalendarMonthDaysComponent);
                 return CalendarMonthDaysComponent;
             }());
