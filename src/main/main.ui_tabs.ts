@@ -26,7 +26,7 @@ export class UiPane {
 @Component({
   selector: 'ui-tabs',
   template: `
-    <ul class="nav nav-tabs">
+    <ul class="ui-tabs">
       <li *ngFor="var pane of panes"
           (click)="select(pane)"
           role="presentation" 

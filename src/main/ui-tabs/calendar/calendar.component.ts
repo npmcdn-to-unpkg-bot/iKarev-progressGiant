@@ -8,7 +8,6 @@ import {calendarMonthDoingsComponent} from './src/calendar-month-doings.componen
 import {CalendarMonthDaysComponent} from './src/calendar-month-days.component'
 
 const styles = `
-    .calendar__to-ideal{margin:-44px 150px;} 
     .left-silver{border-left:1px solid silver;}
     shedule{float: left;width: 100%;position: relative;}
 `
@@ -17,20 +16,17 @@ const styles = `
     selector: 'calendar',
     providers:[DaysService],
     template: `
-    <div class="col-xs-4">
-        <h1>Calendar</h1>
-        <button class="btn calendar__to-ideal p-abs btn-default" [hidden]="showCurrent || !isIdealRoutine" *ngIf="isIdealRoutine" (click)="isIdealRoutine = false">{{idealText}}</button>
-    </div>
-    <div class="calendar__monthes col-xs-8" *ngIf="!showCurrent && isIdealRoutine && !isShowShedule" >
-        <section *ngFor="#m of month; #mIndex = index" (click)="currentMonth = m" class="calendar__monthes_item">
-            {{setMonthName(m.days[0].date.month)}}
+    <div class="calendar__monthes col-xs-12" *ngIf="!showCurrent && isIdealRoutine && !isShowShedule" >
+        <section *ngFor="#m of month; #mIndex = index" (click)="currentMonth = m" [ngClass]="{active: m == currentMonth}" class="calendar__monthes_item">
+            <p class="calendar__monthes_item-p">{{setMonthName(m.days[0].date.month)}}</p>
         </section>
-        <button (click)="onAddMonth()" class="calendar__monthes_add btn btn-primary">+</button>
+        <div (click)="onAddMonth()" class="calendar__monthes_add btn">+</div>
     </div>
     <ideal-routine (idealRoutineSave)="onIdealRoutineSave()" *ngIf="!isIdealRoutine"></ideal-routine>
     <month-days [hidden]="showCurrent || !isIdealRoutine || isShowShedule" (selectDay)="onSelectDay($event)" (editDay)="onEditDay($event)" [data]="currentMonth"></month-days>
     <current-day (backToMonth)="onBackToMonth(boolean)" *ngIf="showCurrent" class="calendar__current_day p-rel" [data]="editDayDoings"></current-day>
     <shedule (closeDay)="onCloseDay()" (saveDay)="onSaveDay($event)" class="calendar__shedule" [data]="selectDayShedule" *ngIf="!showCurrent && selectDayShedule && isShowShedule"></shedule>
+    <button class="btn calendar__to-ideal p-abs btn-default" [hidden]="showCurrent || !isIdealRoutine" *ngIf="isIdealRoutine" (click)="isIdealRoutine = false">{{idealText}}</button>
     `,
     styles:[styles],
     directives:[CalendarMonthDaysComponent, calendarDayComponent, calendarSheduleComponent, idealRoutineComponent, calendarMonthDoingsComponent]

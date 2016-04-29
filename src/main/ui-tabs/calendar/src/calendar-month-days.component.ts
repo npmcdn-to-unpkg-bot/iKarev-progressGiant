@@ -8,8 +8,7 @@ const WEEK = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Satar
 
 const template = `
     <div class="calendar__month calendar__month-{{editWeeksBoo}}">
-        <h2>{{monthName}} 2016</h2>
-        <month-doings (monthDoingDelete)="onMonthDoingDelete($event)" (editMonthDoings)="onEditMonthDoings($event)" class="col-xs-6 calendar__month_block" [data]="monthDoings"></month-doings>
+        <month-doings (monthDoingDelete)="onMonthDoingDelete($event)" (editMonthDoings)="onEditMonthDoings($event)" class="calendar__month_block col-xs-12" [data]="monthDoings"></month-doings>
         <div *ngIf="!editWeeksBoo">
             <div class="calendar__month_weekdays col-xs-9">
                 <div class="btn calendar__month_weekdays-each" *ngFor="#day of weekDays">{{day}}</div>

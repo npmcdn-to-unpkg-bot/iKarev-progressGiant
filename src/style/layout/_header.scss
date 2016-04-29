@@ -1,5 +1,17 @@
 html,body{
     overflow:visible!important;
+    font-family: Ubuntu;
+}
+
+.bg{
+    &__blue {
+        background-color: #1b49be;
+    }
+}
+.color{
+    &-white{
+        color: #fff;
+    }
 }
 
 nav-bar {
@@ -17,9 +29,38 @@ nav-bar {
 .fleft{
     float:left;
 }
-ui-tabs{
+.ui-tabs{
     margin-top:20px;
     display:block;
+    margin-bottom: 30px;
+    border: 0px;
+    text-align: right;
+    & li{
+        display: inline-block;
+        float: none;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        font: 700 15px/15px 'Ubuntu';
+        & a{
+            color: #fff;
+            transition: .5s;
+            letter-spacing: 3px;
+            padding-bottom: 3px;
+            border-bottom:3px solid transparent;
+            &:hover{
+                color:#fff;
+                text-decoration: none;
+                border-bottom-color:#fff;
+            }
+        }
+        &.active{
+            & a{
+            border-bottom:3px solid #fff;
+            }
+        }
+    }
+}
+.nav-tabs{
 }
 .w-100{
     width:100%;
@@ -30,4 +71,10 @@ ui-tabs{
 
  .cur-def{
      cursor:default;
+ }
+ 
+ .disp{
+     &-ib{
+         display: inline-block;
+     }
  }

@@ -5,10 +5,13 @@ import {calendarTargetComponent} from './calendar-target.component';
 import {LifetargetService} from '../../../services/targets/targets.service';
 
 const template = `
-    <h2>Month's doings:</h2><button class="btn calendar__month_edit p-abs btn-primary" (click)="onEditMonthDoings(monthDoingsEdit.show)">{{monthDoingsEdit.text}}</button>
-    <hr />
-    <div *ngIf="!monthDoingsEdit.show">
-        <p *ngFor="#doing of data"><label class="calendar__routine_label">{{doing.description}}</label><input type="checkbox" [(ngModel)]="doing.done" /></p>
+    <h2 class="color-white">Month's doings:</h2>
+    <div class="btn calendar__month_edit p-abs" (click)="onEditMonthDoings(monthDoingsEdit.show)">{{monthDoingsEdit.text}}</div>
+    <div class="calendar__month_doings-list" *ngIf="!monthDoingsEdit.show">
+        <p class="calendar__month_doing" *ngFor="#doing of data">
+            <label class="calendar__routine_label disp-ib">{{doing.description}}</label>
+            <input class="calendar__routine_input disp-ib" type="checkbox" [(ngModel)]="doing.done" />
+        </p>
     </div>
     <div *ngIf="monthDoingsEdit.show">
         <h4>Add below new doings you have to do this month</h4>
@@ -48,7 +51,7 @@ export class calendarMonthDoingsComponent{
         //this.month = this.data;
     }
     monthDoingsEdit = {
-        text:'Add doings',
+        text:'Edit doings',
         show:false
     }
     
@@ -58,7 +61,7 @@ export class calendarMonthDoingsComponent{
     }
     
     onEditMonthDoings(boo){
-        this.monthDoingsEdit.text = boo ? 'Add doings' : 'Back'
+        this.monthDoingsEdit.text = boo ? 'Edit doings' : 'Back'
         this.monthDoingsEdit.show = !this.monthDoingsEdit.show;
     }
     

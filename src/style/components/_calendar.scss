@@ -1,6 +1,8 @@
 .calendar{
     display: block;
     padding-bottom:40px;
+    float: left;
+    position: relative;
     &__cell{
         border: 1px solid silver;
         width:10%;
@@ -158,6 +160,22 @@
     &__month{
         float: left;
         width: 100%;
+        &_doing{
+            width: 25%;
+            display: inline-block;
+            &:before{
+                content:'';
+                width:5px;
+                height:5px;
+                background: #fff;
+                position: absolute;
+                margin: 8px 1px;
+                border-radius: 50%;
+            }
+        }
+        &_doings-list{
+            
+        }
         &_weekdays{
             &-each{
                 width: 10%;
@@ -168,11 +186,19 @@
             max-height: none;
         }
         &_block{
-            padding-bottom: 20px;
-            border-left: 1px solid silver;
         }
         &_edit{
-            margin: -40px 210px;
+            right: 0;
+            top: 20px;
+            background: #fff;
+            color: #1b49be;
+            font-weight: 700;
+            border:1px solid transparent;
+            &:hover{
+                background: #1b49be;
+                color: #fff;
+                border:1px solid #fff;
+            }
         }
         &_week{
             height: 53px;
@@ -189,35 +215,68 @@
         &_item{
             width: 14%;
             margin: 5px 1%;
-            border: 1px solid #286090;
             float: left;
             padding: 5px 10px;
             text-align: center;
-            border-radius: 3px;
             cursor: pointer;
-            &:hover{
-                background: #dfdfdf;
+            &:hover, &.active{
+                & > p{
+                    border-bottom-color:#fff;
+                }
+            }
+            &-p{
+                display: inline-block;
+                border-bottom: 2px solid transparent;
+                font: 400 15px/15px Ubuntu;
+                color: #fff;
+                transition:.5s;
+                text-transform: uppercase;
+                padding-bottom: 2px;
             }
         }
         &_add{
             position: absolute;
-            bottom: 5px;
+            bottom: 17px;
             right:5px;
             border-radius: 50%;
             font: 500 30px/36px Arial;
             width: 35px;
             height: 35px;
             padding: 0;
+            color: #1b49be;
+            background: #fff;
+            outline:0px;
+            user-select:none;
+            border:0px;
+            &:hover{
+                background: #1b49be;
+                color: #fff;
+                border:1px solid #fff;
+                &:active{
+                    &:focus{
+                        outline:0px !important;
+                    }
+                }
+            }
         }
     }
     &__routine{
         &_label{
-            width: calc(100% - 20px);
+            margin-right: 3px;
+            margin-bottom: 0px;
             vertical-align: middle;
+            color: #fff;
+            font-weight: 400;
+            max-width: calc(100% - 30px);
+            white-space: nowrap;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            padding-left: 15px;
         }
         &_input{
             vertical-align: middle;
             width:13px;
+            margin-top: 3px;
         }
     }
     &__weeks{
@@ -240,6 +299,10 @@
                 margin-top: -32px;
             }
         }
+    }
+    &__to-ideal{
+        bottom:10px;
+        right:10px;
     }
 }
 
