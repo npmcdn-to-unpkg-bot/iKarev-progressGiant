@@ -4,25 +4,34 @@ import {IDay, IMonth, IDoing, IWeek} from '../../../services/app-types'
 import {calendarWeeksComponent} from './calendar-weeks.component'
 import {calendarMonthDoingsComponent} from './calendar-month-doings.component'
 
-const WEEK = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Satarday'];
+const WEEK = ['SU','MO','TU','WE','TH','FR','SA'];
 
 const template = `
     <div class="calendar__month calendar__month-{{editWeeksBoo}}">
         <month-doings (monthDoingDelete)="onMonthDoingDelete($event)" (editMonthDoings)="onEditMonthDoings($event)" class="calendar__month_block col-xs-12" [data]="monthDoings"></month-doings>
-        <div *ngIf="!editWeeksBoo">
-            <div class="calendar__month_weekdays col-xs-9">
-                <div class="btn calendar__month_weekdays-each" *ngFor="#day of weekDays">{{day}}</div>
+        <div>
+            <div *ngIf="!editWeeksBoo" class="col-xs-9 nopadding bg-white">
+                <div class="calendar__month_weekdays nopadding col-xs-12">
+                    <div class="btn calendar__month_weekdays-each" *ngFor="#day of weekDays">{{day}}</div>
+                </div>
+                <div class="col-xs-12 calendar__month_days nopadding" *ngIf="!editWeeksBoo">
+                    <div class="calendar__cell" *ngFor="#day of data.days">
+                        <p class="calendar__cell_date">{{day.date.number < 10 ? 0 : ''}}{{day.date.number}}</p>
+                        <p (click)="onEditDay(day)" class="calendar__cell_add"></p>
+                        <p (click)="onSelectDay(day)" class="calendar__cell_doings-qty">{{day.doings.length}}</p>
+                        <div class="calendar__cell_deadlines" *ngIf="day.deadlines.length > 0">
+                            <span class="calendar__cell_deadlines-title">Deadlines</span>
+                            <ul class="calendar__cell_deadlines-list">
+                                <li *ngFor="#deadline of day.deadlines" class="calendar__cell_deadlines-item">
+                                    <p class="calendar__cell_deadlines-item-name">{{deadline.title}}</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-xs-3 calendar__month_week left-silver"><div class="calendar__month_week-inner btn btn-default">Weeks</div></div>
+            <weeks (editWeeks)="onEditWeeks($event)" class="col-xs-3 left-silver calendar__weeks" [ngClass]="{calendar__weeks_edit: editWeeksBoo}" [data]="data.weeks"></weeks>
         </div>
-        <div class="col-xs-9 calendar__month_days" *ngIf="!editWeeksBoo">
-            <div class="calendar__cell" *ngFor="#day of data.days">
-                <p class="calendar__cell_date">{{day.date.number < 10 ? 0 : ''}}{{day.date.number}}</p>
-                <p (click)="onEditDay(day)" class="calendar__cell_add">Edit</p>
-                <p (click)="onSelectDay(day)" class="calendar__cell_doings-qty">{{day.doings.length}}</p>
-            </div>
-        </div>
-        <weeks (editWeeks)="onEditWeeks($event)" class="col-xs-3 left-silver calendar__weeks" [ngClass]="{calendar__weeks_edit: editWeeksBoo}" [data]="data.weeks"></weeks>
     </div>`
 @Component({
     selector: 'month-days',
@@ -44,6 +53,7 @@ export class CalendarMonthDaysComponent{
     }
     
     ngOnInit(){
+        this.ngOnChanges();
     }
     
     ngOnChanges(){

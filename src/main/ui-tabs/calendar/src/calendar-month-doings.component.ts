@@ -13,7 +13,7 @@ const template = `
             <input class="calendar__routine_input disp-ib" type="checkbox" [(ngModel)]="doing.done" />
         </p>
     </div>
-    <div *ngIf="monthDoingsEdit.show">
+    <div class="calendar__month_block-edit" *ngIf="monthDoingsEdit.show">
         <h4>Add below new doings you have to do this month</h4>
         <div *ngFor="#doing of data; #i = index" class="calendar__current_line">
             <input class="calendar__current_doing" [(ngModel)]="doing.description" />
@@ -25,8 +25,8 @@ const template = `
                         (focus)="selectTargetIsActive = true"
                     />
             <select-target class="calendar__current_form-select month-select" *ngIf="selectTargetIsActive" [data]="lifeTarget" (selectedTarget)="onSelectShortTarget(doing, $event)"></select-target>
-            <div (click)="onDoingDelete(i)" *ngIf="data.length > 1" class="btn btn-danger calendar__current_delete">X</div>
-            <div *ngIf="i+1 == data.length && doing.target" (click)="onMonthDoingAdd(doing)" class="btn btn-success calendar__current_add-doing">+</div>
+            <div (click)="onDoingDelete(i)" *ngIf="data.length > 1" class="btn btn-default calendar__current_delete"></div>
+            <div *ngIf="i+1 == data.length && doing.target" (click)="onMonthDoingAdd(doing)" class="btn btn-primary calendar__current_add-doing calendar__current_add-doing-monthes"></div>
         </div>
     </div>`
     
@@ -56,7 +56,6 @@ export class calendarMonthDoingsComponent{
     }
     
     ngOnInit(){
-        console.log(this.data);
         this.lifeTarget = this._lifetargetService.getTargets();
     }
     

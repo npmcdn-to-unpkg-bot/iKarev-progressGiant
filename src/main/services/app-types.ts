@@ -3,13 +3,9 @@ export interface IDay{
     date: IDate;
     doings: IDoing[];
     routine: IDayRoutine[];
+    deadlines: IDeadline[];
     done: boolean;
 };
-
-export interface IDayRoutine{
-    doing:string;
-    time:number;
-}
 
 export interface IWeek{
     month:number;
@@ -21,6 +17,22 @@ export interface IMonth{
     days:IDay[];
     weeks:IWeek[];
     doings:IDoing[];
+}
+
+export interface IYear{
+    index:number;
+    number:number;
+    monthes:IMonth[];
+}
+
+export interface IDeadline{
+    date:IDate;
+    title:string;
+}
+
+export interface IDayRoutine{
+    doing:string;
+    time:number;
 }
 
 export interface ISaveDay {
@@ -47,13 +59,6 @@ export interface IIdealRoutine{
 }
 
 export interface IHighCharts {}
-
-export interface IShortTarget{
-    target: string,
-    deadline: IDate,
-    doings: IDoing[],
-    why: string
-};
 
 export interface IDate{
     year:number,
@@ -83,4 +88,12 @@ export interface IGlobalTarget{
 export interface ILongTarget{
     target:string,
     shortTargets: IShortTarget[]
+};
+
+export interface IShortTarget{
+    target: string,
+    deadline: IDate,
+    doings: IDoing[],
+    why: string,
+    done: boolean
 };

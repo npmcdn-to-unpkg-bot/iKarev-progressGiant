@@ -1,3 +1,9 @@
+*{
+    &:focus{
+        outline:0px !important;
+    }
+}
+
 html,body{
     overflow:visible!important;
     font-family: Ubuntu;
@@ -5,7 +11,10 @@ html,body{
 
 .bg{
     &__blue {
-        background-color: #1b49be;
+        background-color: $mainblue;
+    }
+    &-white{
+        background-color: #fff;
     }
 }
 .color{
@@ -19,6 +28,9 @@ nav-bar {
     .navbar {
         border-radius: 0;
     }
+}
+.nopadding{
+    padding: 0 !important;
 }
 .p-abs{
     position:absolute;

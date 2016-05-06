@@ -15,13 +15,13 @@ const positions = [{x:0,y:0,width:2,height:2},{x:0,y:2,width:5,height:1},{x:2,y:
   selector: 'app',
   template: `
     <ui-tabs>
-      <template ui-pane title='Calendar' active="active">
+      <template ui-pane title='Calendar'>
         <calendar class="calendar">Spreadsheet in loading...</calendar>
       </template>
       <template ui-pane title='Lifetarget'>
         <lifetarget>Lifetarget in loading...</lifetarget>
       </template>
-      <template ui-pane title='Statistic'>
+      <template ui-pane title='Statistic' active="active">
         <stat>Statistic in loading...</stat>
       </template>
     </ui-tabs>

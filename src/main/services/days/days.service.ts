@@ -37,7 +37,7 @@ export class DaysService{
                 default: daysQty = 31;
             }
             for(var i = 0; i < daysQty; i++){
-                this.month[0].days[i] = {index:i, date:{year:2016,month:newMonth,number:i+1,weekday:(i+1)%7},doings:[],done:false, routine:[{doing:'',time:0}]};
+                this.month[0].days[i] = {index:i, date:{year:2016,month:newMonth,number:i+1,weekday:(i+1)%7},doings:[], deadlines:[], done:false, routine:[{doing:'',time:0}]};
             }  
         }
         if (window.localStorage["doings"] != undefined && window.localStorage["doings"]) {
@@ -61,9 +61,11 @@ export class DaysService{
                 }
             }
         } else {
+            console.log(this.month[0].weeks);
             for(var i = 0; i < 5; i++){
-                this.month[0].weeks.push({month:this.month[0].index, doings:[]});
+                this.month[0].weeks.push({month:this.month[0].index, doings:[{description:'', month:newMonth,important:true,urgent:true,main:false,global:0,target:'',time:0}]});
             }
+            console.log(this.month[0].weeks);
         }
         return this.month;
     }

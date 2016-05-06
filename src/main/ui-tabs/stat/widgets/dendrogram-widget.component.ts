@@ -33,7 +33,7 @@ export class DendrogramWidgetComponent {
     var diagonal = d3.svg.diagonal()
         .projection(function(d) { return [d.y, d.x]; });
 
-    var svg = d3.select("body").append("svg")
+    var svg = d3.select(".node").append("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g")

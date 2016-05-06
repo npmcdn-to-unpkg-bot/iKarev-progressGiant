@@ -57,6 +57,7 @@ export class CalendarComponent{
     }
     
     onAddMonth(){
+        console.log('onAddMonth');
         var days:IDay[] = [];
         var weeks:IWeek[] = [];
         var doings:IDoing[] = [];
@@ -67,10 +68,9 @@ export class CalendarComponent{
             case 3: case 5: case 7: case 9: case 11: daysQty = 30; break;
             default: daysQty = 31;
         }
-        for(var i = 0; i < daysQty; i++) days[i] = {index:i, date:{year:2016,month:newMonth,number:i+1,weekday:(i+1)%7},doings:[],done:false, routine:[{doing:'',time:0}]};
+        for(var i = 0; i < daysQty; i++) days[i] = {index:i, date:{year:2016,month:newMonth,number:i+1,weekday:(i+1)%7},doings:[], deadlines:[], done:false, routine:[{doing:'',time:0}]};
         for(var i = 0; i < 5; i++) weeks[i] = {month:this.month.length, doings:[{description:'', month:newMonth,important:true,urgent:true,main:false,global:0,target:'',time:0}]}
-        doings = [{month:this.month[this.month.length-1].index + 1,description:'',important:true,urgent:true,main:false,target:'',global:0,time:0}] 
-        console.log(newMonth);
+        doings = [{month:this.month[this.month.length-1].index + 1,description:'',important:true,urgent:true,main:false,target:'',global:0,time:0}]
         this.month.push({index:newMonth,days:days,weeks:weeks,doings:doings});
         this._daysService.updateDay();
         this._daysService.updateWeeks();
@@ -87,7 +87,6 @@ export class CalendarComponent{
     }
     
     onDoingDelete(i){
-        console.log(this.month[0].doings);
         this.month[0].doings.splice(i,1);
         this._daysService.updateDay();
     }

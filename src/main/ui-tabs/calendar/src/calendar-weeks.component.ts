@@ -3,16 +3,18 @@ import {ILifeTarget, IShortTarget, IWeek, IDoing} from '../../../services/app-ty
 import {DaysService, WEEK} from '../../../services/days/days.service';
 
 const styles = `
-    .calendar__weeks_block-true{max-height:none;}
-    `
+    .border{width:100%;}
+    .border .calendar__weeks_label{width:80%;margin: 10px 0 0 5%;}
+    .border .calendar__weeks_input{width:8%;text-align:center;margin:10px 0 10px 2%;}
+`
 const template = `
-    <div [attr.weeksMarker]="data[0] ? data[0].month : 0" class="btn btn-primary calendar__weeks_edit-button" (click)="onEditWeekDoings(weekDoingsEdit.show)">{{weekDoingsEdit.text}}</div>
+    <div [ngClass]="{weeksdoingsedit:weekDoingsEdit.show,weeksdoingsback:!weekDoingsEdit.show}" [attr.weeksMarker]="data[0] ? data[0].month : 0" class="btn calendar__weeks_edit-button" (click)="onEditWeekDoings(weekDoingsEdit.show)">{{weekDoingsEdit.text}}</div>
     <div *ngFor="#week of data; #weekIdx = index">
         <div class="calendar__weeks_block-{{weekDoingsEdit.show}}">
-            <div class="calendar__weeks_block" *ngIf="weekDoingsEdit.show && week.doings.length > 0">
+            <div [ngClass]="{border: weekDoingsEdit.show}" class="calendar__weeks_block" *ngIf="weekDoingsEdit.show">
                 <p *ngFor="#doing of week.doings">
-                    <label class="calendar__routine_label">{{doing.description}}</label>
-                    <input class="calendar__routine_input" type="checkbox" [(ngModel)]="doing.done" />
+                    <label class="calendar__weeks_label">{{doing.description}}</label>
+                    <input class="calendar__weeks_input" type="checkbox" [(ngModel)]="doing.done" />
                 </p>
             </div>
             <div class="calendar__weeks_block" *ngIf="!weekDoingsEdit.show">
@@ -21,10 +23,10 @@ const template = `
                     <span>Important?</span> <input type="checkbox" [(ngModel)]="doing.important" />
                     <span>Urgent?</span> <input type="checkbox" [(ngModel)]="doing.urgent" />
                     <input type="number" class="calendar__current_plantime" value="{{doing.planTime}}" />
-                    <div (click)="onDoingDelete(week, i)" *ngIf="week.doings.length > 1" class="btn btn-danger calendar__current_delete">X</div>
+                    <div (click)="onDoingDelete(week, i)" *ngIf="week.doings.length > 1" class="btn btn-default calendar__current_delete"></div>
                 </div>
-                <div (click)="onWeekDoingAdd(week)" class="btn btn-success calendar__current_add-doing">Add Week Doing</div>
             </div>
+            <div *ngIf="!weekDoingsEdit.show" (click)="onWeekDoingAdd(week)" class="btn btn-primary calendar__current_add-doing"></div>
         </div>
     </div>`
     
@@ -39,7 +41,7 @@ export class calendarWeeksComponent{
     @Output() editWeeks = new EventEmitter<any>();
     currentEdit:number;
     weekDoingsEdit = {
-        text:'Add week\'s doings',
+        text:'Week\'s doings',
         show:true
     }
         
@@ -65,11 +67,12 @@ export class calendarWeeksComponent{
     }
     
     onEditWeekDoings(boo){
+        console.log('onEditWeekDoings');
         if(this.weekDoingsEdit.show){
             this._daysService.updateWeeks();
         }
         this.editWeeks.emit(boo);
-        this.weekDoingsEdit.text = !boo ? 'Add week\'s doings' : 'Back';
+        this.weekDoingsEdit.text = !boo ? 'Week\'s doings' : 'Back';
         this.weekDoingsEdit.show = !this.weekDoingsEdit.show;
     }
 }

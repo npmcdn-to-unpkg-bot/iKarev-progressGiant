@@ -18,7 +18,7 @@ System.register(['angular2/core'], function(exports_1, context_1) {
                 core_1 = core_1_1;
             }],
         execute: function() {
-            exports_1("LIFETARGET", LIFETARGET = { target: '', globalTargets: [{ target: '', time: 0, role: '', longTargets: [{ target: '', shortTargets: [{ target: '', deadline: { year: 0, month: 0, weekday: 0, number: 0 }, doings: [], why: '' }] }] }] });
+            exports_1("LIFETARGET", LIFETARGET = { target: '', globalTargets: [{ target: '', time: 0, role: '', longTargets: [{ target: '', shortTargets: [{ target: '', deadline: { year: 0, month: 0, weekday: 0, number: 0 }, doings: [], why: '', done: false }] }] }] });
             LifetargetService = (function () {
                 function LifetargetService() {
                     this.lifetarget = LIFETARGET;

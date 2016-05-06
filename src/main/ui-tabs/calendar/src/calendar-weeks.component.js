@@ -21,8 +21,8 @@ System.register(['angular2/core', '../../../services/days/days.service'], functi
                 days_service_1 = days_service_1_1;
             }],
         execute: function() {
-            styles = "\n    .calendar__weeks_block-true{max-height:none;}\n    ";
-            template = "\n    <div [attr.weeksMarker]=\"data[0] ? data[0].month : 0\" class=\"btn btn-primary calendar__weeks_edit-button\" (click)=\"onEditWeekDoings(weekDoingsEdit.show)\">{{weekDoingsEdit.text}}</div>\n    <div *ngFor=\"#week of data; #weekIdx = index\">\n        <div class=\"calendar__weeks_block-{{weekDoingsEdit.show}}\">\n            <div class=\"calendar__weeks_block\" *ngIf=\"weekDoingsEdit.show && week.doings.length > 0\">\n                <p *ngFor=\"#doing of week.doings\">\n                    <label class=\"calendar__routine_label\">{{doing.description}}</label>\n                    <input class=\"calendar__routine_input\" type=\"checkbox\" [(ngModel)]=\"doing.done\" />\n                </p>\n            </div>\n            <div class=\"calendar__weeks_block\" *ngIf=\"!weekDoingsEdit.show\">\n                <div *ngFor=\"#doing of week.doings; #i = index\" class=\"calendar__current_line\">\n                    <input class=\"calendar__current_doing\" [(ngModel)]=\"doing.description\" />\n                    <span>Important?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.important\" />\n                    <span>Urgent?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.urgent\" />\n                    <input type=\"number\" class=\"calendar__current_plantime\" value=\"{{doing.planTime}}\" />\n                    <div (click)=\"onDoingDelete(week, i)\" *ngIf=\"week.doings.length > 1\" class=\"btn btn-danger calendar__current_delete\">X</div>\n                </div>\n                <div (click)=\"onWeekDoingAdd(week)\" class=\"btn btn-success calendar__current_add-doing\">Add Week Doing</div>\n            </div>\n        </div>\n    </div>";
+            styles = "\n    .border{width:100%;}\n    .border .calendar__weeks_label{width:80%;margin: 10px 0 0 5%;}\n    .border .calendar__weeks_input{width:8%;text-align:center;margin:10px 0 10px 2%;}\n";
+            template = "\n    <div [ngClass]=\"{weeksdoingsedit:weekDoingsEdit.show,weeksdoingsback:!weekDoingsEdit.show}\" [attr.weeksMarker]=\"data[0] ? data[0].month : 0\" class=\"btn calendar__weeks_edit-button\" (click)=\"onEditWeekDoings(weekDoingsEdit.show)\">{{weekDoingsEdit.text}}</div>\n    <div *ngFor=\"#week of data; #weekIdx = index\">\n        <div class=\"calendar__weeks_block-{{weekDoingsEdit.show}}\">\n            <div [ngClass]=\"{border: weekDoingsEdit.show}\" class=\"calendar__weeks_block\" *ngIf=\"weekDoingsEdit.show\">\n                <p *ngFor=\"#doing of week.doings\">\n                    <label class=\"calendar__weeks_label\">{{doing.description}}</label>\n                    <input class=\"calendar__weeks_input\" type=\"checkbox\" [(ngModel)]=\"doing.done\" />\n                </p>\n            </div>\n            <div class=\"calendar__weeks_block\" *ngIf=\"!weekDoingsEdit.show\">\n                <div *ngFor=\"#doing of week.doings; #i = index\" class=\"calendar__current_line\">\n                    <input class=\"calendar__current_doing\" [(ngModel)]=\"doing.description\" />\n                    <span>Important?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.important\" />\n                    <span>Urgent?</span> <input type=\"checkbox\" [(ngModel)]=\"doing.urgent\" />\n                    <input type=\"number\" class=\"calendar__current_plantime\" value=\"{{doing.planTime}}\" />\n                    <div (click)=\"onDoingDelete(week, i)\" *ngIf=\"week.doings.length > 1\" class=\"btn btn-default calendar__current_delete\"></div>\n                </div>\n            </div>\n            <div *ngIf=\"!weekDoingsEdit.show\" (click)=\"onWeekDoingAdd(week)\" class=\"btn btn-primary calendar__current_add-doing\"></div>\n        </div>\n    </div>";
             calendarWeeksComponent = (function () {
                 function calendarWeeksComponent(_daysService, elementRef) {
                     this._daysService = _daysService;
@@ -30,7 +30,7 @@ System.register(['angular2/core', '../../../services/days/days.service'], functi
                     this.weeks = days_service_1.WEEK;
                     this.editWeeks = new core_1.EventEmitter();
                     this.weekDoingsEdit = {
-                        text: 'Add week\'s doings',
+                        text: 'Week\'s doings',
                         show: true
                     };
                     var container = this.elementRef.nativeElement;
@@ -51,11 +51,12 @@ System.register(['angular2/core', '../../../services/days/days.service'], functi
                     this._daysService.updateWeeks();
                 };
                 calendarWeeksComponent.prototype.onEditWeekDoings = function (boo) {
+                    console.log('onEditWeekDoings');
                     if (this.weekDoingsEdit.show) {
                         this._daysService.updateWeeks();
                     }
                     this.editWeeks.emit(boo);
-                    this.weekDoingsEdit.text = !boo ? 'Add week\'s doings' : 'Back';
+                    this.weekDoingsEdit.text = !boo ? 'Week\'s doings' : 'Back';
                     this.weekDoingsEdit.show = !this.weekDoingsEdit.show;
                 };
                 __decorate([
